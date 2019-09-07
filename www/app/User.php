@@ -71,7 +71,7 @@ class User extends Authenticatable implements JWTSubject
      * @param $openId
      * @return mixed
      */
-    public function loginByOpenid($openId){
+    public static function loginByOpenid($openId){
        return  self::where('openid','=',$openId)->first();
     }
 }
