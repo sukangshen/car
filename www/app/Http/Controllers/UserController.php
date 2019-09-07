@@ -144,7 +144,9 @@ class UserController extends Controller
     public function auth(Request $request)
     {
 
-        $targetUrl = $request->input('target_url',env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL'));
+        $targetUrl = $request->input('target_url');
+        $targetUrl = $targetUrl ?: env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL');
+
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
         $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL') . '?target_url='.$targetUrl;
@@ -174,6 +176,8 @@ class UserController extends Controller
     {
 
         $targetUrl = $request->input('target_url');
+        $targetUrl = $targetUrl ?: env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL');
+
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
         $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL');
