@@ -32,3 +32,7 @@ Route::group([
 });
 
 Route::post('/upload', 'Api\UploadController@index');
+
+
+Route::post('/upload', 'Api\UploadController@index');
+
