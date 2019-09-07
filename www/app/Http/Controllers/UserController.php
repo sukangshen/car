@@ -144,10 +144,10 @@ class UserController extends Controller
     public function auth(Request $request)
     {
 
-        $targetUrl = $request->input('target_url');
+        $targetUrl = $request->input('target_url',env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL'));
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
-        $config['oauth']['callback'] = 'http://love.anheqiaobei.com/api/callback' . '?target_url=http://love.anheqiaobei.com';
+        $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL') . '?target_url='.$targetUrl;
 
         $app = Factory::officialAccount($config);
         $oauth = $app->oauth;
@@ -176,7 +176,7 @@ class UserController extends Controller
         $targetUrl = $request->input('target_url');
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
-        $config['oauth']['callback'] = 'http://love.anheqiaobei.com/api/callback';
+        $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL');
 
         $app = Factory::officialAccount($config);
         $oauth = $app->oauth;
@@ -205,7 +205,6 @@ class UserController extends Controller
             $userInfo = $createUser = User::add($userParams);
         }
         $token = JWTAuth::fromUser($userInfo);
-
 
         $url = sprintf('%s%stoken=%s&open_id=%s', $targetUrl, $link, ($token ?? ''), ($userParams['openid'] ?? ''));
 

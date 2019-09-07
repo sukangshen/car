@@ -24,15 +24,20 @@ Route::group([
 ], function ($router) {
     Route::post('register', 'UserController@register');
     Route::post('login', 'UserController@login');
+
+    //登录
     Route::post('logout', 'UserController@logout');
-    Route::post('refresh', 'UserController@refresh');
     Route::post('me', 'UserController@me');
-    Route::post('test', 'UserController@test');
+    Route::post('refresh', 'UserController@refresh');
+
+    //微信
+    Route::any('/auth', 'UserController@auth');
+    Route::any('/callback', 'UserController@callback');
+
 
 });
 
 Route::post('/upload', 'Api\UploadController@index');
 
-Route::any('/auth', 'UserController@auth');
-Route::any('/callback', 'UserController@callback');
+
 
