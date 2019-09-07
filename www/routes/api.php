@@ -31,8 +31,8 @@ Route::group([
     Route::post('refresh', 'UserController@refresh');
 
     //微信
-    Route::any('/auth', 'UserController@auth');
-    Route::any('/callback', 'UserController@callback');
+    Route::any('auth', 'UserController@auth');
+    Route::any('callback', 'UserController@callback');
 
 
 });
