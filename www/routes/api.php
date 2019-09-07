@@ -33,6 +33,6 @@ Route::group([
 
 Route::post('/upload', 'Api\UploadController@index');
 
-
-Route::post('/upload', 'Api\UploadController@index');
+Route::any('/auth', 'UserController@auth');
+Route::any('/callback', 'UserController@callback');
 

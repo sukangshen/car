@@ -22,7 +22,7 @@ class UserController extends Controller
         // 这样的结果是，token 只能在有效期以内进行刷新，过期无法刷新
         // 如果把 refresh 也放进去，token 即使过期但仍在刷新期以内也可刷新
         // 不过刷新一次作废
-        $this->middleware('auth:api', ['except' => ['login', 'register','auth','callback']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'auth', 'callback']]);
         // 另外关于上面的中间件，官方文档写的是『auth:api』
         // 但是我推荐用 『jwt.auth』，效果是一样的，但是有更加丰富的报错信息返回
     }
@@ -66,6 +66,7 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
+
         $request->validate([
             'name' => 'required|min:1|max:255',
             'password' => 'required|min:6|max:255'
@@ -146,7 +147,7 @@ class UserController extends Controller
         $targetUrl = $request->input('target_url');
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
-        $config['oauth']['callback'] = 'http://love.anheqiaobei.com/api/callback'.'?target_url=http://love.anheqiaobei.com';
+        $config['oauth']['callback'] = 'http://love.anheqiaobei.com/api/callback' . '?target_url=http://love.anheqiaobei.com';
 
         $app = Factory::officialAccount($config);
         $oauth = $app->oauth;
@@ -182,21 +183,33 @@ class UserController extends Controller
 
         $userParams = [];
         $user = $oauth->user();
-        $userParams['openid'] = $user->id;
-        $userParams['nickname'] = trim($user->nickName);
-        $userParams['gender'] = $user->sex ?: 0;
-        $userParams['headimgurl'] = $user->headimgurl;
-        $userParams['city'] = $user->city;
-        $userParams['province'] = $user->province;
-        $userParams['country'] = $user->country;
 
-        //判断用户是否存在
-        $userExist = User::getByOpenid($userParams['openid']);
+        $userInfo = $user->toArray();
+        $userInfo = $userInfo['original'];
 
-        if(empty($userExist)) {
-            User::add($userParams);
+        $link = '?';
+        if (strpos($targetUrl, '?') !== false) {
+            $link = '&';
         }
-        header('location:'. $targetUrl); // 跳转到 user/profile
+
+        $userParams['openid'] = $userInfo['openid'];
+        $userParams['nickname'] = trim($userInfo['nickname']);
+        $userParams['gender'] = $userInfo['sex'] ?: 0;
+        $userParams['headimgurl'] = $userInfo['headimgurl'];
+        $userParams['city'] = $userInfo['city'];
+        $userParams['province'] = $userInfo['province'];
+        $userParams['country'] = $userInfo['country'];
+
+        $userInfo = User::loginByOpenid($userParams['openid']);
+        if (empty($userInfo)) {
+            $userInfo = $createUser = User::add($userParams);
+        }
+        $token = JWTAuth::fromUser($userInfo);
+
+
+        $url = sprintf('%s%stoken=%s&open_id=%s', $targetUrl, $link, ($token ?? ''), ($userParams['openid'] ?? ''));
+
+        header('location:' . $url); // 跳转到 user/profile
     }
 
 

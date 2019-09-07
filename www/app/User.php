@@ -63,8 +63,15 @@ class User extends Authenticatable implements JWTSubject
         return $user;
     }
 
-    public static function getByOpenid($openid){
-        
-        return  self::where('openid','=',$openid)->first();
+
+    /**
+     * Desc:直接校验OpenId不验证密码
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-07
+     * @param $openId
+     * @return mixed
+     */
+    public function loginByOpenid($openId){
+       return  self::where('openid','=',$openId)->first();
     }
 }
