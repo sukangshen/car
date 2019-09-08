@@ -9,33 +9,38 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use zgldh\QiniuStorage\QiniuStorage;
+use App\Http\Services\Qiniu;
 
 class UploadController extends UserController
 {
-    public $disk = '';
 
-    public function index(Request $request)
+
+    public function img(Request $request)
     {
-        $user  = $request->user();
-        $this->disk = QiniuStorage::disk('qiniu');
-        $data = [];
-        // 获取到文件信息
-        $file = !empty($_FILES['fileUpload']) ? $_FILES['fileUpload'] : [];
-        if (empty($file)) {
-            return '';
+
+        if ($request->hasFile('image') && $request->image->isValid()) {
+            $allow_types = ['image/png', 'image/jpeg', 'image/gif', 'image/jpg'];
+            if (!in_array($request->image->getMiMeType(), $allow_types)) {
+                return ['status' => 0, 'msg' => '图片类型不正确！'];
+            }
+            if ($request->image->getClientSize() > 1024 * 1024 * 3) {
+                return ['status' => 0, 'msg' => '图片大小不能超过 3M'];
+            }
+            $path = $request->image->store('public/images');
+//            //上传到本地
+//            return ['status'=> 1, 'msg'=>'/storage'.str_replace('public', '', $path)];
+
+            //storage_path返回根目录下的storage的绝对路径 里面放的直接丢在后面
+            $filePath = storage_path('app/' . $path);
+            $fileName = basename($filePath);
+
+            //上传到七牛
+            $data['url'] = Qiniu::upload($filePath, $fileName);  //调用的全局函数
+            //返回
+            return ['status' => 1, 'img_url' => env('QINIU_URL') . '/' . $fileName];
+
         }
-        // 获取文件名
-        $fileName = $file['name'];
-        $TmpName = $file['tmp_name'];
-        // 获取文件内容
-        $fp = fopen($TmpName, "r");
-        $contents = fread($fp, filesize($TmpName));
-        $this->disk->put($fileName, $contents);                        //上传文件
-        $data['url'] = $this->disk->downloadUrl($fileName);      //获取下载地址
-        $data['ur1'] = $this->disk->privateDownloadUrl($fileName);
-        return $this->response('true', 1, $data);
     }
+
+
 }

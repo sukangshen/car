@@ -37,7 +37,15 @@ Route::group([
 
 });
 
-Route::post('/upload', 'Api\UploadController@index');
+Route::group([
+    'prefix' => 'user'
+], function ($router) {
+
+    Route::post('img', 'Api\UploadController@img');
+
+});
+
+
 
 
 
