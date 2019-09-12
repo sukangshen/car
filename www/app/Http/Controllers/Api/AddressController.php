@@ -24,6 +24,6 @@ class AddressController extends Controller
         $parentKey = $request->input('parent_key',0);
         $addressList = Address::query()->where('parent_key',$parentKey)->get();
 
-        return $addressList;
+        return $this->success($addressList);
     }
 }

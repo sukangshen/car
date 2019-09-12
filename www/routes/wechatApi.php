@@ -27,3 +27,6 @@ Route::any('callback', 'UserController@callback');
 
 //获取城市列表
 Route::get('getAddressList', 'AddressController@getAddressList');
+
+Route::post('profileCreate', 'ProfileController@profileCreate');
+Route::get('profileSearch', 'ProfileController@profileSearch');
