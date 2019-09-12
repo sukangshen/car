@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Api;
 
 use Log;
-
+use Illuminate\Routing\Controller  as Controller;
 class WeChatController extends Controller
 {
 

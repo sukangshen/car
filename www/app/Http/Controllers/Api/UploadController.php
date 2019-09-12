@@ -7,13 +7,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\Http\Services\Qiniu;
+use App\Http\Controllers\Api\Controller as Controller;
 
-class UploadController extends UserController
+class UploadController extends Controller
 {
-
 
     public function img(Request $request)
     {

@@ -17,32 +17,8 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-
-
-Route::group([
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('register', 'UserController@register');
-    Route::post('login', 'UserController@login');
-
-    //登录
-    Route::post('logout', 'UserController@logout');
-    Route::post('me', 'UserController@me');
-    Route::post('refresh', 'UserController@refresh');
-
-    //微信
-    Route::any('auth', 'UserController@auth');
-    Route::any('callback', 'UserController@callback');
-
-
-});
-
-Route::group([
-    'prefix' => 'user'
-], function ($router) {
-
-    Route::post('img', 'Api\UploadController@img');
-
+Route::group(['prefix'=>'wechat','namespace'=>'Api'],function (){
+    require base_path('routes/wechatApi.php');
 });
 
 
