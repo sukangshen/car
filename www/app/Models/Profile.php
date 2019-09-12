@@ -7,7 +7,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+//use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\SoftDeletesEx as SoftDeletes;
 
 class Profile extends Model
 {
@@ -38,5 +39,11 @@ class Profile extends Model
     public function fromDateTime($value){
         return strtotime(parent::fromDateTime($value));
     }
+
+    public function resource()
+    {
+        return $this->hasOne('App\Models\Resources');
+    }
+
 
 }
