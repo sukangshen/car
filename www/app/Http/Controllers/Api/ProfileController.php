@@ -42,6 +42,9 @@ class ProfileController extends Controller
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
         $params['resource_id'] = $resourceCreate->id;
+
+        unset($params['self_img']);
+        unset($params['wechat_img']);
         $profile = Profile::query()->create($params);
         return $this->success($profile);
     }
