@@ -10,9 +10,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\Profile;
 use App\Models\Resources;
 use Illuminate\Http\Request;
-use App\Http\Services\Qiniu;
 use App\Http\Controllers\Api\Controller as Controller;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
+use App\Http\Services\ProfileService;
 
 class ProfileController extends Controller
 {
@@ -34,7 +34,7 @@ class ProfileController extends Controller
             return $this->fail(400);
         }
         $user = auth('api')->user();
-        error_log('用户信息' . json_encode($user));
+        Log::info('用户信息' . print_r($user, true));
 
         //增加资源
         $resourceParams['user_id'] = $user['id'];
@@ -42,7 +42,6 @@ class ProfileController extends Controller
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
         $params['resource_id'] = $resourceCreate->id;
-
         $profile = Profile::query()->create($params);
         return $this->success($profile);
     }
@@ -56,11 +55,10 @@ class ProfileController extends Controller
      */
     public function profileSearch(Request $request)
     {
-
         $query = Profile::query();
         $query->leftJoin('resources', 'profile.id', '=', 'resources.id');
         $query->addSelect([
-            'profile.id',
+            'profile.id as profile_id',
             'profile.gender',
             'profile.address',
             'profile.age',
@@ -69,8 +67,9 @@ class ProfileController extends Controller
             'profile.self_intro',
             'profile.friend_condition',
         ]);
-        $query->addSelect('resources.resource');
-        $profiles = $query->get();
+        $query->addSelect(['resources.resource', 'resources.id as resource_id']);
+        $profiles = $query->paginate($request->input('limit'))->toarray();
+        $profiles = ProfileService::profileSearch($profiles);
 
         return $this->success($profiles);
     }
