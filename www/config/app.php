@@ -179,6 +179,8 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
         Overtrue\LaravelWeChat\ServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
+
 
     ],
 
