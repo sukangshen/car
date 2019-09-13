@@ -7,12 +7,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Services\ProfileService;
 use App\Models\Profile;
 use App\Models\Resources;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\Controller as Controller;
 use Illuminate\Support\Facades\Log;
-use App\Http\Services\ProfileService;
 
 class ProfileController extends Controller
 {
@@ -33,11 +33,11 @@ class ProfileController extends Controller
         if (empty($params['wechat_img']) || empty($params['self_img'])) {
             return $this->fail(400);
         }
-        $user = auth('api')->user();
-        Log::info('用户信息' . print_r($user, true));
-
-        //增加资源
-        $resourceParams['user_id'] = $user['id'];
+//        $user = auth('api')->user();
+//        Log::info('用户信息' . print_r($user, true));
+//
+//        //增加资源
+//        $resourceParams['user_id'] = $user['id'];
         $resourceImg = ['wechat_img' => $params['wechat_img'], 'self_img' => $params['self_img']];
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
@@ -69,8 +69,16 @@ class ProfileController extends Controller
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);
         $profiles = $query->paginate($request->input('limit'))->toarray();
-        $profiles = ProfileService::profileSearch($profiles);
+        if (!empty($profiles)) {
+            foreach ($profiles['data'] as $index => $item) {
+                //调整图片
+                $images = json_decode($item['resource'], true);
+                $profiles['data'][$index]['wechat_img'] = $images['wechat_img'];
+                $profiles['data'][$index]['self_img'] = $images['self_img'];
+                unset($profiles['data'][$index]['resource']);
 
+            }
+        }
         return $this->success($profiles);
     }
 }

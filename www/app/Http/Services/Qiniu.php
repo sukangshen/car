@@ -5,7 +5,7 @@
  * Date: 2019-09-08
  */
 
-namespace app\Http\Services;
+namespace App\Http\Services;
 
 // 引入鉴权类
 use Qiniu\Auth;

@@ -15,8 +15,7 @@ Route::group(['middleware' => 'api.jwt.auth'], function (){
     Route::post('me', 'UserController@me');
     Route::post('refresh', 'UserController@refresh');
 
-    //七牛云图片上传
-    Route::post('img', 'UploadController@img');
+
 
 });
 
@@ -30,3 +29,5 @@ Route::get('getAddressList', 'AddressController@getAddressList');
 
 Route::post('profileCreate', 'ProfileController@profileCreate');
 Route::get('profileSearch', 'ProfileController@profileSearch');
+//七牛云图片上传
+Route::post('img', 'UploadController@img');
