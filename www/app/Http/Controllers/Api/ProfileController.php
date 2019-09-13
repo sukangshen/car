@@ -76,8 +76,8 @@ class ProfileController extends Controller
             foreach ($profiles['data'] as $index => $item) {
                 //调整图片
                 $images = json_decode($item['resource'], true);
-                $profiles['data'][$index]['wechat_img'] = $images['wechat_img'];
-                $profiles['data'][$index]['self_img'] = $images['self_img'];
+                $profiles['data'][$index]['wechat_img'] = json_decode($images['wechat_img'],true);
+                $profiles['data'][$index]['self_img'] =json_decode($images['self_img'],true);
                 unset($profiles['data'][$index]['resource']);
 
             }
