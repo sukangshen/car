@@ -38,6 +38,7 @@ class ProfileController extends Controller
 
         //增加资源
         $resourceParams['user_id'] = $user['id'];
+        $resourceParams['nickname'] = trim($user['nickname']);
         $resourceImg = ['wechat_img' => $params['wechat_img'], 'self_img' => $params['self_img']];
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
