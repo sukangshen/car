@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Services\ProfileService;
+use App\Http\Services\UtilService;
 use App\Models\Profile;
 use App\Models\Resources;
 use Illuminate\Http\Request;
@@ -48,20 +49,19 @@ class ProfileController extends Controller
         }
 
         $user = auth('api')->user();
-        Log::info('用户信息' . print_r($user, true));
-
+        //创建帖子
+        $params['user_id'] = $user['id'];
         $params['nickname'] = trim($user['nickname']);
         $params['end_time'] = time() + 24 * 60 * 60 * Profile::END_TIME;
 
-        //增加资源
+        //增加图片资源
         $resourceParams['user_id'] = $user['id'];
         $resourceImg = ['wechat_img' => $params['wechat_img'], 'self_img' => $params['self_img']];
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
         $params['resource_id'] = $resourceCreate->id;
 
-        unset($params['self_img']);
-        unset($params['wechat_img']);
+        $params = UtilService::opz($params,['self_img','wechat_img']);
         $profile = Profile::query()->create($params);
         return $this->success($profile);
     }
