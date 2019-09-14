@@ -33,11 +33,11 @@ class ProfileController extends Controller
         if (empty($params['wechat_img']) || empty($params['self_img'])) {
             return $this->fail(400);
         }
-//        $user = auth('api')->user();
-//        Log::info('用户信息' . print_r($user, true));
-//
-//        //增加资源
-//        $resourceParams['user_id'] = $user['id'];
+        $user = auth('api')->user();
+        Log::info('用户信息' . print_r($user, true));
+
+        //增加资源
+        $resourceParams['user_id'] = $user['id'];
         $resourceImg = ['wechat_img' => $params['wechat_img'], 'self_img' => $params['self_img']];
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
@@ -72,16 +72,9 @@ class ProfileController extends Controller
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);
         $profiles = $query->paginate($request->input('limit'))->toarray();
-        if (!empty($profiles)) {
-            foreach ($profiles['data'] as $index => $item) {
-                //调整图片
-                $images = json_decode($item['resource'], true);
-                $profiles['data'][$index]['wechat_img'] = json_decode($images['wechat_img'],true);
-                $profiles['data'][$index]['self_img'] =json_decode($images['self_img'],true);
-                unset($profiles['data'][$index]['resource']);
 
-            }
-        }
+        $profiles = ProfileService::profileSearch($profiles);
+
         return $this->success($profiles);
     }
 }

@@ -35,17 +35,27 @@ class UploadController extends Controller
 
             //storage_path返回根目录下的storage的绝对路径 里面放的直接丢在后面
             $filePath = storage_path('app/' . $path);
-            $fileName = basename($filePath);
-
+            $fileName = md5(time() . 'ahqb') . '.' . self::getExtension($filePath);
             //上传到七牛
             $data['url'] = Qiniu::upload($filePath, $fileName);  //调用的全局函数
 
-            $response = ['img_url' => env('QINIU_URL') . '/' . $fileName];
+            $response = ['img_url' =>$fileName];
             //返回
             return $this->success($response);
 
         }
     }
 
+    /**
+     * Desc:获取文件的后缀名
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-14
+     * @param $filename
+     * @return mixed
+     */
+    public static function getExtension($filename)
+    {
+        return pathinfo($filename, PATHINFO_EXTENSION);
+    }
 
 }
