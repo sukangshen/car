@@ -18,6 +18,8 @@ Route::group(['middleware' => 'api.jwt.auth'], function (){
     //发表帖子
     Route::post('profileCreate', 'ProfileController@profileCreate');
 
+    //校验发布权限
+    Route::get('profileCreateCheck', 'ProfileController@profileCreateCheck');
 
 });
 

@@ -28,7 +28,7 @@ class ProfileController extends Controller
         //判断是否有未下架的帖子
         $exist = Profile::query()->where('end_time', '>', time())->where('user_id', $user['id'])->first();
 
-        return $this->success(intval($exist));
+        return $this->success($exist);
     }
 
     /**
