@@ -15,6 +15,8 @@ Route::group(['middleware' => 'api.jwt.auth'], function (){
     Route::post('me', 'UserController@me');
     Route::post('refresh', 'UserController@refresh');
 
+    //发表帖子
+    Route::post('profileCreate', 'ProfileController@profileCreate');
 
 
 });
@@ -26,8 +28,7 @@ Route::any('callback', 'UserController@callback');
 
 //获取城市列表
 Route::get('getAddressList', 'AddressController@getAddressList');
-
-Route::post('profileCreate', 'ProfileController@profileCreate');
+//获取帖子列表
 Route::get('profileSearch', 'ProfileController@profileSearch');
 //七牛云图片上传
 Route::post('img', 'UploadController@img');
