@@ -112,12 +112,13 @@ class ProfileController extends Controller
     {
         $profileId = $request->input('profile_id');
 
-        $profile = Profile::query()->where('id', $profileId)->first()->toArray();
-        if (!empty($profile)) {
+        $profile = Profile::query()->where('id', $profileId)->first();
+        if ($profile) {
+            $profile = $profile->toArray();
             $profile = ProfileService::profileDetail($profile);
         }
 
-        return $this->success($profile);
+        return $this->success($profile ?: []);
     }
 
     /**

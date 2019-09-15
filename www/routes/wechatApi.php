@@ -27,7 +27,7 @@ Route::group(['middleware' => 'api.jwt.auth'], function () {
     Route::get('myProfile', 'MeController@myProfile');
 
     //获取我发布的帖子列表
-//    Route::get('myProfileList', 'ProfileController@myProfileList');
+    Route::get('myProfileList', 'ProfileController@myProfileList');
 
 });
 
@@ -53,4 +53,3 @@ Route::get('getSlides', 'SlidesController@getSlides');
 //获取轮播图推荐
 Route::get('profileDetail', 'ProfileController@profileDetail');
 
-Route::get('myProfileList', 'ProfileController@myProfileList');
