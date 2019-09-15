@@ -44,7 +44,6 @@ class ProfileController extends Controller
         $params = $request->all();
         $user = auth('api')->user();
 
-
         //增加图片资源
         if (empty($params['wechat_img']) || empty($params['self_img'])) {
             return $this->fail(400);
@@ -57,7 +56,10 @@ class ProfileController extends Controller
 
         //增加图片资源
         $resourceParams['user_id'] = $user['id'];
-        $resourceImg = ['wechat_img' => $params['wechat_img'], 'self_img' => $params['self_img']];
+        $resourceImg = [
+            'wechat_img' => $params['wechat_img'],
+            'self_img' => $params['self_img']
+        ];
         $resourceParams['resource'] = json_encode($resourceImg);
         $resourceCreate = Resources::query()->create($resourceParams);
         $params['resource_id'] = $resourceCreate->id;
@@ -96,5 +98,18 @@ class ProfileController extends Controller
         $profiles = ProfileService::profileSearch($profiles);
 
         return $this->success($profiles);
+    }
+
+
+    public function profileDetail(Request $request)
+    {
+        $profileId = $request->input('profile_id');
+
+        $profile = Profile::query()->where('id', $profileId)->where('end_time', '>', time())->first()->toArray();
+        if (!empty($profile)) {
+            $profile = ProfileService::profileDetail($profile);
+        }
+
+        return $this->success($profile);
     }
 }

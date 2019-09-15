@@ -23,8 +23,8 @@ Route::group(['middleware' => 'api.jwt.auth'], function () {
     //获取我的信息
     Route::get('userInfo', 'MeController@userInfo');
 
-//    //获取我发布的帖子
-//    Route::get('myProfile', 'MeController@myProfile');
+    //获取我发布的帖子
+    Route::get('myProfile', 'MeController@myProfile');
 
 });
 
@@ -44,5 +44,8 @@ Route::get('profileSearch', 'ProfileController@profileSearch');
 //七牛云图片上传
 Route::any('img', 'UploadController@img');
 
-//获取我发布的帖子
-Route::get('myProfile', 'MeController@myProfile');
+//获取轮播图推荐
+Route::get('getSlides', 'SlidesController@getSlides');
+
+//获取轮播图推荐
+Route::get('profileDetail', 'ProfileController@profileDetail');

@@ -1,19 +1,19 @@
 <?php
 /**
- * Desc:
+ * Desc:首页轮播图
  * User: kangshensu@gmail.com
- * Date: 2019-09-12
+ * Date: 2019-09-15
  */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SoftDeletesEx as SoftDeletes;
 
-class Profile extends Model
+class Slides extends Model
 {
     use SoftDeletes;
 
-    const END_TIME = 7;//定义展示时间
     /**
      * 需要被转换成日期的属性。
      *
@@ -26,7 +26,7 @@ class Profile extends Model
      *
      * @var string
      */
-    protected $table = 'profile';
+    protected $table = 'slides';
 
     protected $guarded = [];
 
@@ -35,14 +35,12 @@ class Profile extends Model
      * @return false|int
      * @author dividez
      */
-    public function fromDateTime($value){
+    public function fromDateTime($value)
+    {
         return strtotime(parent::fromDateTime($value));
     }
 
-    public function resource()
-    {
-        return $this->hasOne('App\Models\Resources');
-    }
-
-
 }
+
+
+
