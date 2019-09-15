@@ -33,4 +33,4 @@ Route::get('getAddressList', 'AddressController@getAddressList');
 //获取帖子列表
 Route::get('profileSearch', 'ProfileController@profileSearch');
 //七牛云图片上传
-Route::post('img', 'UploadController@img');
+Route::any('img', 'UploadController@img');
