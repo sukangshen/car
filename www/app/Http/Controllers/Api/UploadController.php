@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Services\Qiniu;
+use App\Http\Services\QiniuService;
 use App\Http\Controllers\Api\Controller as Controller;
 
 class UploadController extends Controller
@@ -37,7 +37,7 @@ class UploadController extends Controller
             $filePath = storage_path('app/' . $path);
             $fileName = md5(time() . 'ahqb') . '.' . self::getExtension($filePath);
             //上传到七牛
-            $data['url'] = Qiniu::upload($filePath, $fileName);  //调用的全局函数
+            $data['url'] = QiniuService::upload($filePath, $fileName);  //调用的全局函数
 
             $response = ['img_url' =>$fileName];
             //返回
@@ -57,5 +57,8 @@ class UploadController extends Controller
     {
         return pathinfo($filename, PATHINFO_EXTENSION);
     }
+
+
+
 
 }

@@ -33,7 +33,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Desc:创建
+     * Desc:创建帖子
      * User: kangshensu@gmail.com
      * Date: 2019-09-12
      * @param Request $request
@@ -70,7 +70,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Desc:列表
+     * Desc:全部列表
      * User: kangshensu@gmail.com
      * Date: 2019-09-12
      * @param Request $request
@@ -101,15 +101,57 @@ class ProfileController extends Controller
     }
 
 
+    /**
+     * Desc:帖子详情
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-15
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function profileDetail(Request $request)
     {
         $profileId = $request->input('profile_id');
 
-        $profile = Profile::query()->where('id', $profileId)->where('end_time', '>', time())->first()->toArray();
+        $profile = Profile::query()->where('id', $profileId)->first()->toArray();
         if (!empty($profile)) {
             $profile = ProfileService::profileDetail($profile);
         }
 
         return $this->success($profile);
+    }
+
+    /**
+     * Desc:我的帖子列表
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-15
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function myProfileList(Request $request)
+    {
+        $user = auth('api')->user();
+        $query = Profile::query();
+        $query->where('profile.user_id', $user['id']);
+        $query->leftJoin('resources', 'profile.resource_id', '=', 'resources.id');
+        $query->addSelect([
+            'profile.id as profile_id',
+            'profile.gender',
+            'profile.address',
+            'profile.age',
+            'profile.height',
+            'profile.weight',
+            'profile.self_intro',
+            'profile.friend_condition',
+            'profile.nickname',
+            'profile.address_name',
+            'profile.end_time',
+        ]);
+        $query->addSelect(['resources.resource', 'resources.id as resource_id']);
+        $profiles = $query->orderBy('profile.created_at', 'desc')->get()->toarray();
+
+        $profiles = ProfileService::myProfileList($profiles);
+
+        return $this->success($profiles);
+
     }
 }

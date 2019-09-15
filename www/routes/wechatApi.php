@@ -26,6 +26,9 @@ Route::group(['middleware' => 'api.jwt.auth'], function () {
     //获取我发布的帖子
     Route::get('myProfile', 'MeController@myProfile');
 
+    //获取我发布的帖子列表
+//    Route::get('myProfileList', 'ProfileController@myProfileList');
+
 });
 
 //微信授权入口
@@ -49,3 +52,5 @@ Route::get('getSlides', 'SlidesController@getSlides');
 
 //获取轮播图推荐
 Route::get('profileDetail', 'ProfileController@profileDetail');
+
+Route::get('myProfileList', 'ProfileController@myProfileList');

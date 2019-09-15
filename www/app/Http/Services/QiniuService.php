@@ -12,11 +12,19 @@ use Qiniu\Auth;
 // 引入上传类
 use Qiniu\Storage\UploadManager;
 
-class Qiniu
+class QiniuService
 {
+
+    /**
+     * Desc:七牛云图片上传
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-15
+     * @param $filePath
+     * @param $filename
+     * @return string
+     */
     public static function upload($filePath, $filename)
     {
-
         // 需要填写你的 Access Key 和 Secret Key
         $accessKey = env('QINIU_ACCESS_KEY');
         $secretKey = env('QINIU_SECRET_KEY');
@@ -28,12 +36,7 @@ class Qiniu
         // 生成上传 Token
         $token = $auth->uploadToken($bucket);
         // 要上传文件的本地路径
-        //    $filePath = './php-logo.png';
-
-        // 上传到七牛后保存的文件名
-//        $key = basename($filePath);
-
-        try{
+        try {
             // 初始化 UploadManager 对象并进行文件的上传。
             $uploadMgr = new UploadManager();
             // 调用 UploadManager 的 putFile 方法进行文件的上传。
@@ -48,8 +51,38 @@ class Qiniu
             return '';
         }
 
+    }
 
 
+    /**
+     * Desc:返回七牛云文件路径
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-15
+     * @param $fileName
+     * @return string
+     */
+    public static function getFilepath($fileName)
+    {
+        return 'http://' . env('QINIU_URL') . '/' . $fileName;
+    }
 
+    /**
+     * Desc:根据资源数组拼接资源完整路径
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-15
+     * @param $data
+     * @return array
+     */
+    public static function getFilepathByArray($data)
+    {
+        if (empty($data)) {
+            return [];
+        }
+        $responseArray = [];
+        foreach ($data as $index => $item) {
+            $responseArray[] = self::getFilepath($item);
+        }
+
+        return $responseArray;
     }
 }
