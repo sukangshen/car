@@ -42,13 +42,14 @@ class ProfileController extends Controller
     public function profileCreate(Request $request)
     {
         $params = $request->all();
+        $user = auth('api')->user();
+
 
         //增加图片资源
         if (empty($params['wechat_img']) || empty($params['self_img'])) {
             return $this->fail(400);
         }
 
-        $user = auth('api')->user();
         //创建帖子
         $params['user_id'] = $user['id'];
         $params['nickname'] = trim($user['nickname']);
@@ -61,7 +62,7 @@ class ProfileController extends Controller
         $resourceCreate = Resources::query()->create($resourceParams);
         $params['resource_id'] = $resourceCreate->id;
 
-        $params = UtilService::opz($params,['self_img','wechat_img']);
+        $params = UtilService::opz($params, ['self_img', 'wechat_img']);
         $profile = Profile::query()->create($params);
         return $this->success($profile);
     }
@@ -76,7 +77,7 @@ class ProfileController extends Controller
     public function profileSearch(Request $request)
     {
         $query = Profile::query();
-        $query->leftJoin('resources', 'profile.id', '=', 'resources.id');
+        $query->leftJoin('resources', 'profile.resource_id', '=', 'resources.id');
         $query->addSelect([
             'profile.id as profile_id',
             'profile.gender',
@@ -86,6 +87,8 @@ class ProfileController extends Controller
             'profile.weight',
             'profile.self_intro',
             'profile.friend_condition',
+            'profile.nickname',
+            'profile.address_name',
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);
         $profiles = $query->paginate($request->input('limit'))->toarray();
