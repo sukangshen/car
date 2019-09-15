@@ -1,4 +1,5 @@
 *
 !.gitignore
 !certs/localhost/
-!localhost.conf
+localhost.conf
+!api_ahqb.conf
