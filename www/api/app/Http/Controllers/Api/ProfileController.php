@@ -97,7 +97,7 @@ class ProfileController extends Controller
             'profile.address_name',
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);
-        $query->orderBy('created_at','desc');
+        $query->orderBy('profile.created_at','desc');
         $profiles = $query->paginate($request->input('limit'))->toarray();
 
         $profiles = ProfileService::profileSearch($profiles);
