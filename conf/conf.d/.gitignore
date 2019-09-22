@@ -3,3 +3,4 @@
 !certs/localhost/
 localhost.conf
 !api_ahqb.conf
+!static_ahqb.conf
