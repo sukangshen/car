@@ -14,8 +14,8 @@ Route::group(['middleware' => 'api.jwt.auth'], function () {
     Route::post('me', 'UserController@me');
     Route::post('refresh', 'UserController@refresh');
 
-    //发表帖子
-    Route::post('profileCreate', 'ProfileController@profileCreate');
+//    //发表帖子
+//    Route::post('profileCreate', 'ProfileController@profileCreate');
 
     //校验发布权限
     Route::get('profileCreateCheck', 'ProfileController@profileCreateCheck');
@@ -30,6 +30,9 @@ Route::group(['middleware' => 'api.jwt.auth'], function () {
     Route::get('myProfileList', 'ProfileController@myProfileList');
 
 });
+
+//发表帖子
+Route::post('profileCreate', 'ProfileController@profileCreate');
 
 //微信授权入口
 Route::any('auth', 'UserController@auth');

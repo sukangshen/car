@@ -42,8 +42,11 @@ class ProfileController extends Controller
     public function profileCreate(Request $request)
     {
         $params = $request->all();
-        $user = auth('api')->user();
+//        $user = auth('api')->user();
 
+        $user['id'] = 1;
+        $user['nickname'] = '测试';
+        $user['address'] = '测试';
         //增加图片资源
         if (empty($params['wechat_img']) || empty($params['self_img'])) {
             return $this->fail(400);
