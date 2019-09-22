@@ -4,4 +4,4 @@
 nohup.out
 docker-compose.yml
 docker-compose.yml.*
-www/static/*
+www/static/
