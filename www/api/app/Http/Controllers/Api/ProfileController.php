@@ -51,6 +51,7 @@ class ProfileController extends Controller
 
         //创建帖子
         $params['user_id'] = $user['id'];
+        $params['address_name'] = trim($user['address']);
         $params['nickname'] = trim($user['nickname']);
         $params['end_time'] = time() + 24 * 60 * 60 * Profile::END_TIME;
 
