@@ -62,8 +62,6 @@ class ProfileController extends Controller
         $params['address_birth'] = trim($params['address_birth']);
         $params['address_birth_name'] = trim($params['address_birth_name']);
         $params['end_time'] = time() + 24 * 60 * 60 * Profile::END_TIME;
-        $params['self_img'] = QiniuService::imgUpload($params['self_img']);
-        $params['wechat_img'] = QiniuService::imgUpload($params['wechat_img']);
 
         //增加图片资源
         $resourceParams['user_id'] = $user['id'];
