@@ -85,4 +85,40 @@ class QiniuService
 
         return $responseArray;
     }
+
+    public static function imgUpload($params)
+    {
+        if(empty($params)) {
+            return [];
+        }
+
+        $response = [];
+        foreach ($params  as $index =>$item) {
+            $path = $item->store('public/images');
+
+            $filePath = storage_path('app/' . $path);
+            $fileName = md5(time() . 'ahqb') . '.' . self::getExtension($filePath);
+            //上传到七牛
+            $data['url'] = QiniuService::upload($filePath, $fileName);  //调用的全局函数
+            $response[] = $fileName;
+        }
+
+        return $response;
+
+    }
+
+    /**
+     * Desc:获取文件的后缀名
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-14
+     * @param $filename
+     * @return mixed
+     */
+    public static function getExtension($filename)
+    {
+        return pathinfo($filename, PATHINFO_EXTENSION);
+    }
+
+
+
 }
