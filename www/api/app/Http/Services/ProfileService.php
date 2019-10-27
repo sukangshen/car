@@ -8,6 +8,7 @@
 namespace App\Http\Services;
 
 use App\Models\Resources;
+use App\User;
 
 class ProfileService
 {
@@ -24,14 +25,35 @@ class ProfileService
             return [];
         }
 
-        foreach ($profiles['data'] as $index => $item) {
-            //调整图片
-            $images = json_decode($item['resource'], true);
-            $profiles['data'][$index]['wechat_img'] = QiniuService::getFilepathByArray($images['wechat_img']);
-            $profiles['data'][$index]['self_img'] = QiniuService::getFilepathByArray($images['self_img']);
-            unset($profiles['data'][$index]['resource']);
-        }
+        $resourceId = $profiles ? array_column($profiles, 'resource_id') : [];
+        $userId = $profiles ? array_column($profiles, 'user_id') : [];
 
+        $resourceList = Resources::query()->whereIn('id', $resourceId)->get()->toArray();
+        $resourceListMap = $resourceList ? array_column($resourceList, null, 'id') : [];
+        $userList = User::query()->whereIn('id', $userId)->get()->toArray();
+        $userListMap = $userList ? array_column($userList, null, 'id') : [];
+
+
+        foreach ($profiles as $index => &$item) {
+            if (array_key_exists($item['resource_id'], $resourceListMap)) {
+                //调整图片
+                $images = json_decode($resourceListMap[$item['resource_id']]['resource'], true);
+                $item['wechat_img'] = QiniuService::getFilepathByArray($images['wechat_img']);
+                $item['self_img'] = QiniuService::getFilepathByArray($images['self_img']);
+            } else {
+                $item['wechat_img'] = [];
+                $item['self_img'] = [];
+            }
+
+            if (array_key_exists($item['user_id'], $userListMap)) {
+                $item['nickname'] = $userListMap[$item['user_id']]['nickname'];
+                $item['headimgurl'] = $userListMap[$item['user_id']]['headimgurl'];
+            } else {
+                $item['nickname'] = '';
+                $item['headimgurl'] = '';
+            }
+
+        }
         return $profiles ?: [];
     }
 

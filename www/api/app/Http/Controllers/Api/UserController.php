@@ -146,7 +146,7 @@ class UserController extends Controller
 
         $targetUrl = $request->input('target_url');
         $targetUrl = $targetUrl ?: env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL');
-
+        $targetUrl = urlencode($targetUrl);
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
         $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL') . '?target_url='.$targetUrl;
