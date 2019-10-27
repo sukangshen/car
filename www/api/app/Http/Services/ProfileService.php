@@ -72,14 +72,19 @@ class ProfileService
         }
         //获取个人信息资源
         $resources = Resources::query()->where('id', $data['resource_id'])->first()->toArray();
+        //个人信息
+        $userInfo = User::query()->where('id', $data['user_id'])->first()->toArray();
 
-        if (empty($resources)) {
-            return [];
+        $data['wechat_img'] = [];
+        $data['self_img'] = [];
+        if(!empty($resources['resource'])) {
+            $images = json_decode($resources['resource'], true);
+            $data['wechat_img'] = QiniuService::getFilepathByArray($images['wechat_img']);
+            $data['self_img'] = QiniuService::getFilepathByArray($images['self_img']);
         }
 
-        $images = json_decode($resources['resource'], true);
-        $data['wechat_img'] = QiniuService::getFilepathByArray($images['wechat_img']);
-        $data['self_img'] = QiniuService::getFilepathByArray($images['self_img']);
+        $data['nickname'] = $userInfo['nickname'] ?: '';
+        $data['headimgurl'] = $userInfo['headimgurl'] ?: '';
 
         $data = UtilService::opz($data, ['created_at', 'updated_at', 'deleted_at', 'resource_id', 'end_time']);
         return $data;
