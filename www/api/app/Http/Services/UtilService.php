@@ -20,7 +20,7 @@ class UtilService
      */
     public static function opz($result, $keys = array())
     {
-        $keys = $keys ?: ['deleted_at','updated_at','created_at'];
+        $keys = $keys ?: ['deleted_at', 'updated_at', 'created_at'];
         foreach ($keys as $key) {
             if (isset($result[$key])) {
                 unset($result[$key]);
@@ -61,4 +61,16 @@ class UtilService
         }
         return $ret;
     }
+
+    /**
+     * Desc:生成流水号
+     * User: kangshensu@gmail.com
+     * Date: 2019-10-27
+     * @return string
+     */
+    public static function createSerialNo()
+    {
+        return date('YmdHis') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+    }
+
 }

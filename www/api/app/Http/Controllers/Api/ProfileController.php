@@ -44,10 +44,10 @@ class ProfileController extends Controller
     {
         $params = $request->all();
         $params = array_filter($params);
-//        $user = auth('api')->user();
+        $user = auth('api')->user();
 
-        $user['id'] = 1;
-        $user['nickname'] = '测试';
+//        $user['id'] = 1;
+//        $user['nickname'] = '测试';
         //增加图片资源
         if (empty($params['wechat_img']) || empty($params['self_img'])) {
             return $this->fail(400);
@@ -62,8 +62,9 @@ class ProfileController extends Controller
         $params['address_birth'] = trim($params['address_birth']);
         $params['address_birth_name'] = trim($params['address_birth_name']);
         $params['end_time'] = time() + 24 * 60 * 60 * Profile::END_TIME;
+        $params['birth'] = $params['age'];
+        $params['age'] = floor((time() - strtotime($params['age'])) / (60*60*24*365));
 
-        //增加图片资源
         $resourceParams['user_id'] = $user['id'];
         $resourceImg = [
             'wechat_img' => $params['wechat_img'],
@@ -106,7 +107,7 @@ class ProfileController extends Controller
 
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);
-        $query->orderBy('profile.created_at','desc');
+        $query->orderBy('profile.created_at', 'desc');
         $profiles = $query->paginate($request->input('limit'))->toarray();
 
         $profiles = ProfileService::profileSearch($profiles);

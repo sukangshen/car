@@ -56,3 +56,6 @@ Route::get('getSlides', 'SlidesController@getSlides');
 //获取轮播图推荐
 Route::get('profileDetail', 'ProfileController@profileDetail');
 
+
+//创建预支付订单'
+Route::post('createOrder', 'WechatPaymentController@createOrder');
