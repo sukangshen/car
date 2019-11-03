@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use EasyWeChat\Factory;
 use  App\Http\Controllers\Api\Controller as Controller;
 use Illuminate\Support\Facades\Validator;
+use function EasyWeChat\Kernel\Support\generate_sign;
 
 class WechatPaymentController extends Controller
 {
@@ -28,7 +29,7 @@ class WechatPaymentController extends Controller
         }
 
         $app = app('wechat.payment');
-        $result = $app->order->unify([
+        $unify = $app->order->unify([
             'body' => $request->goods_name,
             'out_trade_no' => UtilService::createSerialNo(),
             'total_fee' => $request->total_fee,
@@ -37,6 +38,21 @@ class WechatPaymentController extends Controller
             'openid' => $request->openid,
         ]);
 
-        return $this->success($result);
+        if ($unify['return_code'] === 'SUCCESS' && !isset($unify['err_code'])) {
+            $pay = [
+                'appId' => config('wechat.payment.default.app_id'),
+                'timeStamp' => (string) time(),
+                'nonceStr' => $unify['nonce_str'],
+                'package' => 'prepay_id=' . $unify['prepay_id'],
+                'signType' => 'MD5',
+            ];
+
+            $pay['sign'] = generate_sign($pay, config('wechat.payment.default.key'));
+            return $this->success($pay);
+        } else {
+            $unify['return_code'] = 'FAIL';
+            return $this->success($unify);
+        }
+
     }
 }
