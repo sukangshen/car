@@ -37,7 +37,6 @@ class WechatPaymentController extends Controller
             'openid' => $request->openid,
         ]);
 
-        print_r($result);
-        die;
+        return $this->success($result);
     }
 }
