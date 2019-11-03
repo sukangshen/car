@@ -87,7 +87,8 @@ class UserController extends Controller
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        $userInfo = response()->json(auth('api')->user());
+        return $this->success($userInfo);
     }
 
     /**退出
@@ -149,12 +150,12 @@ class UserController extends Controller
         $targetUrl = urlencode($targetUrl);
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
-        $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL') . '?target_url='.$targetUrl;
+        $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL') . '?target_url=' . $targetUrl;
 
         $app = Factory::officialAccount($config);
         $oauth = $app->oauth;
 
-         $oauth->redirect()->send();
+        $oauth->redirect()->send();
 
 
         // 未登录
