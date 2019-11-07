@@ -43,7 +43,9 @@ class NotifyWechatController extends Controller
             Log::info('--------微信支付回调--------');
 
             $config = config('wechat.payment.default');
+            Log::info('--------微信支付回调配置--------'.print_r($config,true));
             $response = Factory::payment($config)->handlePaidNotify(function ($message, $fail) use ($config) {
+                Log::info('--------微信支付回调数据返回--------'.print_r($message,true));
                 $this->getNotifyWechatService()->payNotify($message);
 
             });
