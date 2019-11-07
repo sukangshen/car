@@ -14,19 +14,20 @@ class Controller extends BaseController
     public function success($data = [])
     {
         return response()->json([
-            'status'  => true,
-            'code'    => 200,
+            'status' => true,
+            'code' => 200,
             'message' => config('errorcode.code')[200],
-            'data'    => $data,
+            'data' => $data,
         ]);
     }
-    public function fail($code, $data = [])
+
+    public function fail($code, $msg = '', $data = [])
     {
         return response()->json([
-            'status'  => false,
-            'code'    => $code,
-            'message' => config('errorcode.code')[(int) $code],
-            'data'    => $data,
+            'status' => false,
+            'code' => $code,
+            'message' => !empty($msg) ? $msg : config('errorcode.code')[(int)$code],
+            'data' => $data,
         ]);
     }
 
