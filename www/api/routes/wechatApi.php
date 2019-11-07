@@ -61,4 +61,4 @@ Route::get('profileDetail', 'ProfileController@profileDetail');
 Route::post('createOrder', 'WechatPaymentController@createOrder');
 
 //支付回调
-Route::any(' payNotify', 'NotifyWechatController@payNotify');
+Route::any('payNotify', 'NotifyWechatController@payNotify');

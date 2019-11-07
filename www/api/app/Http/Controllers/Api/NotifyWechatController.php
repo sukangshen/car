@@ -26,7 +26,7 @@ class NotifyWechatController extends Controller
     }
 
 
-    public function payNotifyAction()
+    public function payNotify()
     {
         try {
             /* //$xml = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
