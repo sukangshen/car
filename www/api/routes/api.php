@@ -17,11 +17,13 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-Route::group(['prefix'=>'wechat','namespace'=>'Api'],function (){
+Route::group(['prefix' => 'wechat', 'namespace' => 'Api'], function () {
     require base_path('routes/wechatApi.php');
 });
 
 
-
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    require base_path('routes/adminApi.php');
+});
 
 

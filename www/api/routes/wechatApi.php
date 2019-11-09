@@ -62,3 +62,5 @@ Route::post('createOrder', 'WechatPaymentController@createOrder');
 
 //支付回调
 Route::any('payNotify', 'NotifyWechatController@payNotify');
+
+Route::get('getTagList', 'TagsController@getTagList');

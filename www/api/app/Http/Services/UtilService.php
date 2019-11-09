@@ -73,4 +73,25 @@ class UtilService
         return date('YmdHis') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
     }
 
+
+    /**
+     * Desc:将二维数组根据某个字段进行分组
+     * User: kangshensu@gmail.com
+     * Date: 2019-09-28
+     * @param $array
+     * @param $columnName
+     * @return array
+     */
+    public static function arrayGroupByColumnName($array, $columnName)
+    {
+        if (empty($array)) {
+            return [];
+        }
+        $arr = array();
+        foreach ($array as $key => $item) {
+            $arr[$item[$columnName]][$key] = $item;
+        }
+        return $arr;
+    }
+
 }
