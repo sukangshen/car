@@ -8,6 +8,7 @@
 namespace App\Http\Services;
 
 use App\Models\Resources;
+use App\Models\Tags;
 use App\User;
 
 class ProfileService
@@ -70,17 +71,30 @@ class ProfileService
         if (empty($data)) {
             return [];
         }
+        $resources = [];
         //获取个人信息资源
-        $resources = Resources::query()->where('id', $data['resource_id'])->first()->toArray();
+        $resourcesObj = Resources::query()->where('id', $data['resource_id'])->first();
+        if ($resourcesObj) {
+            $resources = $resourcesObj->toArray();
+        }
         //个人信息
-        $userInfo = User::query()->where('id', $data['user_id'])->first()->toArray();
-
+        $userInfoObj = User::query()->where('id', $data['user_id'])->first();
+        if ($userInfoObj) {
+            $userInfo = $userInfoObj->toArray();
+        }
         $data['wechat_img'] = [];
         $data['self_img'] = [];
-        if(!empty($resources['resource'])) {
+        $data['tag_list'] = [];
+        if (!empty($resources['resource'])) {
             $images = json_decode($resources['resource'], true);
             $data['wechat_img'] = QiniuService::getFilepathByArray($images['wechat_img']);
             $data['self_img'] = QiniuService::getFilepathByArray($images['self_img']);
+        }
+        $tagIdList = json_decode($data['tag_id'], true);
+        if (!empty($tagIdList)) {
+            //获取个人标签
+            $tagList = Tags::query()->whereIn('id', $tagIdList)->get()->toArray();
+            $data['tag_list'] = $tagList ? array_column($tagList, 'name') : [];
         }
 
         $data['nickname'] = $userInfo['nickname'] ?: '';

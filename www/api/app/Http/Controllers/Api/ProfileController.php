@@ -8,13 +8,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Services\ProfileService;
-use App\Http\Services\QiniuService;
 use App\Http\Services\UtilService;
 use App\Models\Profile;
 use App\Models\Resources;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\Controller as Controller;
-use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -42,42 +40,48 @@ class ProfileController extends Controller
      */
     public function profileCreate(Request $request)
     {
-        $params = $request->all();
-        $params = array_filter($params);
-        $user = auth('api')->user();
+        try {
+            $params = $request->all();
+            $params = array_filter($params);
+            $user = auth('api')->user();
 
-//        $user['id'] = 1;
-//        $user['nickname'] = '测试';
-        //增加图片资源
-        if (empty($params['wechat_img']) || empty($params['self_img'])) {
-            return $this->fail(400);
+            //增加图片资源
+            if (empty($params['wechat_img']) || empty($params['self_img'])) {
+                throw new \Exception('个人微信或者本人照片为空');
+            }
+            //检查标签
+            if (empty($params['tag_id'])) {
+                throw new \Exception('个性标签为空');
+            }
+            //创建帖子
+            $params['user_id'] = $user['id'];
+            $params['nickname'] = trim($user['nickname']);
+            $params['address_live'] = trim($params['address_live']);
+            $params['address_live_name'] = trim($params['address_live_name']);
+            $params['address_birth'] = trim($params['address_birth']);
+            $params['address_birth_name'] = trim($params['address_birth_name']);
+            $params['end_time'] = time() + 24 * 60 * 60 * Profile::END_TIME;
+            $params['birth'] = $params['age'];
+            $params['age'] = floor((time() - strtotime($params['age'])) / (60 * 60 * 24 * 365));
+            $params['tag_id'] = json_encode($params['tag_id']);
+            $params['family_info'] = trim($params['family_info']);
+
+            $resourceParams['user_id'] = $user['id'];
+            $resourceImg = [
+                'wechat_img' => $params['wechat_img'],
+                'self_img' => $params['self_img']
+            ];
+
+            $resourceParams['resource'] = json_encode($resourceImg);
+            $resourceCreate = Resources::query()->create($resourceParams);
+            $params['resource_id'] = $resourceCreate->id;
+
+            $params = UtilService::opz($params, ['self_img', 'wechat_img']);
+            $profile = Profile::query()->create($params);
+            return $this->success($profile);
+        } catch (\Exception $e) {
+            return $this->fail(500, $e->getMessage());
         }
-
-        //创建帖子
-        $params['user_id'] = $user['id'];
-        $params['nickname'] = trim($user['nickname']);
-
-        $params['address_live'] = trim($params['address_live']);
-        $params['address_live_name'] = trim($params['address_live_name']);
-        $params['address_birth'] = trim($params['address_birth']);
-        $params['address_birth_name'] = trim($params['address_birth_name']);
-        $params['end_time'] = time() + 24 * 60 * 60 * Profile::END_TIME;
-        $params['birth'] = $params['age'];
-        $params['age'] = floor((time() - strtotime($params['age'])) / (60*60*24*365));
-
-        $resourceParams['user_id'] = $user['id'];
-        $resourceImg = [
-            'wechat_img' => $params['wechat_img'],
-            'self_img' => $params['self_img']
-        ];
-
-        $resourceParams['resource'] = json_encode($resourceImg);
-        $resourceCreate = Resources::query()->create($resourceParams);
-        $params['resource_id'] = $resourceCreate->id;
-
-        $params = UtilService::opz($params, ['self_img', 'wechat_img']);
-        $profile = Profile::query()->create($params);
-        return $this->success($profile);
     }
 
     /**

@@ -69,4 +69,5 @@ class WeChatController extends Controller
             return $this->fail(500, $e->getMessage());
         }
     }
+
 }
