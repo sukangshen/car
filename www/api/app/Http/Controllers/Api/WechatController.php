@@ -26,7 +26,7 @@ class WeChatController extends Controller
 
         $app = app('wechat.official_account');
         $app->server->push(function ($message) {
-            Log::info('微信推送数据' . print_r($message, true));
+            Log::info('微信推送数据' . $message);
             return "欢迎关注 overtrue！";
         });
 
