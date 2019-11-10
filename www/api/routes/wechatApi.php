@@ -63,4 +63,11 @@ Route::post('createOrder', 'WechatPaymentController@createOrder');
 //支付回调
 Route::any('payNotify', 'NotifyWechatController@payNotify');
 
+//获取标签分类列表
 Route::get('getTagList', 'TagsController@getTagList');
+
+//微信分享
+Route::get('getTicket', 'WechatController@getTicket');
+
+//微信推送
+Route::any('serve','WechatController@serve');
