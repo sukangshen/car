@@ -26,6 +26,7 @@ class WeChatController extends Controller
 
         $app = app('wechat.official_account');
         $app->server->push(function ($message) {
+            Log::info('微信推送数据' . print_r($message, true));
             return "欢迎关注 overtrue！";
         });
 
@@ -46,9 +47,11 @@ class WeChatController extends Controller
         ];
         try {
             $app = app('wechat.official_account');
-            $url = trim($request->input('url', ''));
-            $ticket = $app->jssdk->setUrl(base64_decode($url))->buildConfig($jsApiList, true);
-
+            $url = trim($request->input('url', $debug = false, $beta = false, $json = true));
+            if (!empty($url)) {
+                $url = urldecode($url);
+            }
+            $ticket = $app->jssdk->setUrl($url)->buildConfig($jsApiList, false);
             if (empty($ticket)) {
                 throw new \Exception('ticket 获取失败');
             }
@@ -60,10 +63,8 @@ class WeChatController extends Controller
                 'signature' => $ticket['signature'] ?: '',
                 'jsApiList' => $ticket['jsApiList'] ?: $jsApiList
             ];
-            $data = [
-                'ticket' => $shareArr
-            ];
-            return $this->success($data);
+
+            return $this->success($shareArr);
         } catch (\Exception $e) {
             return $this->fail(500, $e->getMessage());
         }
