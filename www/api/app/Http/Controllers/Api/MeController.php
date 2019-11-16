@@ -33,7 +33,6 @@ class MeController extends Controller
     {
 
     }
-
     /**
      * Desc:获取个人的信息
      * User: kangshensu@gmail.com

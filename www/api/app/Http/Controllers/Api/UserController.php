@@ -7,7 +7,7 @@ use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Api\Controller as Controller;
-
+use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
     /**
@@ -147,7 +147,9 @@ class UserController extends Controller
 
         $targetUrl = $request->input('target_url');
         $targetUrl = $targetUrl ?: env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL');
+        Log::info('--------微信授权--------'.$targetUrl);
         $targetUrl = urlencode($targetUrl);
+        Log::info('--------微信授权333-----'.$targetUrl);
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
         $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL') . '?target_url=' . $targetUrl;
@@ -180,7 +182,7 @@ class UserController extends Controller
 
         $targetUrl = $request->input('target_url');
         $targetUrl = $targetUrl ?: env('WECHAT_OFFICIAL_ACCOUNT_TARGET_URL');
-
+        Log::info('--------微信授权回调--------'.$targetUrl);
         $config = config("wechat.official_account.default");
         $config['oauth']['scopes'] = ['snsapi_userinfo'];
         $config['oauth']['callback'] = env('WECHAT_OFFICIAL_ACCOUNT_CALLBACK_URL');
@@ -214,7 +216,7 @@ class UserController extends Controller
         $token = JWTAuth::fromUser($userInfo);
 
         $url = sprintf('%s%stoken=%s&open_id=%s', $targetUrl, $link, ($token ?? ''), ($userParams['openid'] ?? ''));
-
+        Log::info('--------微信授权回调22--------'.$url);
         header('location:' . $url); // 跳转到 user/profile
     }
 
