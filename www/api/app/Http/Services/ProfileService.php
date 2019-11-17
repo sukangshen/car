@@ -29,10 +29,10 @@ class ProfileService
         $resourceId = $profiles ? array_column($profiles, 'resource_id') : [];
         $userId = $profiles ? array_column($profiles, 'user_id') : [];
 
-        $resourceList = Resources::query()->whereIn('id', $resourceId)->get()->toArray();
-        $resourceListMap = $resourceList ? array_column($resourceList, null, 'id') : [];
-        $userList = User::query()->whereIn('id', $userId)->where('source',
+        $resourceList = Resources::query()->whereIn('id', $resourceId)->where('source',
             Resources::SOURCE_PROFILE_IMG)->get()->toArray();
+        $resourceListMap = $resourceList ? array_column($resourceList, null, 'id') : [];
+        $userList = User::query()->whereIn('id', $userId)->get()->toArray();
         $userListMap = $userList ? array_column($userList, null, 'id') : [];
 
 
