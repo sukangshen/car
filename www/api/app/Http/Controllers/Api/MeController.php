@@ -174,18 +174,22 @@ class MeController extends Controller
                     'status' => 0//待认证
                 ]
             ];
-            $userCheck = UserCheck::query()->where('user_id', $userId)->get()->toArray();
 
-            $userCheckSourceMap = $userCheck ? array_column($userCheck, 'status', 'source') : [];
-
-
-            if (array_key_exists(UserCheck::SOURCE_IDENTITY_IMG, $userCheckSourceMap)) {
-                $data['identity']['status'] = $userCheckSourceMap[UserCheck::SOURCE_IDENTITY_IMG];
+            //实名
+            $userCheckIdentityObj = UserCheck::query()->where('user_id', $userId)->where('source',
+                UserCheck::SOURCE_IDENTITY_IMG)->orderBy('created_at', 'DESC')->first();
+            if ($userCheckIdentityObj) {
+                $userCheckIdentity = $userCheckIdentityObj->toArray();
+                $data['identity']['status'] = $userCheckIdentity['status'];
             }
 
 
-            if (array_key_exists(UserCheck::SOURCE_WORK_IMG, $userCheckSourceMap)) {
-                $data['work']['status'] = $userCheckSourceMap[UserCheck::SOURCE_WORK_IMG];
+            //工作
+            $userCheckWorkObj = UserCheck::query()->where('user_id', $userId)->where('source',
+                UserCheck::SOURCE_WORK_IMG)->orderBy('created_at', 'DESC')->first();
+            if ($userCheckWorkObj) {
+                $userCheckWork = $userCheckWorkObj->toArray();
+                $data['work']['status'] = $userCheckWork['status'];
             }
 
             return $this->success($data);
