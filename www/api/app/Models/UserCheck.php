@@ -2,27 +2,28 @@
 /**
  * Desc:
  * User: kangshensu@gmail.com
- * Date: 2019-09-12
+ * Date: 2019-11-17
  */
-
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Resources extends Model
+class UserCheck extends Model
 {
-    const SOURCE_PROFILE_IMG    = 1;    //  帖子图片
-    const SOURCE_IDENTITY_IMG   = 2;    //  身份图片
-    const SOURCE_WORK_IMG       = 3;    //  工作图片
+    const STATUS_TO_AUDIT       = 1;    //待审核
+    const STATUS_AUDIT_PASS     = 2;    //审核通过
+    const STATUS_AUDIT_UN_PASS  = 2;    //审核未通过
 
+    const SOURCE_IDENTITY_IMG   = 1;    //  身份认证
+    const SOURCE_WORK_IMG       = 2;    //  工作认证
 
     /**
      * 与模型关联的数据表
      *
      * @var string
      */
-    protected $table = 'resources';
+    protected $table = 'user_check';
 
     protected $guarded = [];
 
@@ -35,6 +36,4 @@ class Resources extends Model
     {
         return strtotime(parent::fromDateTime($value));
     }
-
-
 }

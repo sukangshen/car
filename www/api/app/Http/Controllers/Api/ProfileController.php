@@ -67,6 +67,7 @@ class ProfileController extends Controller
             $params['family_info'] = trim($params['family_info']);
 
             $resourceParams['user_id'] = $user['id'];
+            $resourceParams['source'] = Resources::SOURCE_PROFILE_IMG;
             $resourceImg = [
                 'wechat_img' => $params['wechat_img'],
                 'self_img' => $params['self_img']

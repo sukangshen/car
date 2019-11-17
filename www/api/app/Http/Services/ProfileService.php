@@ -31,7 +31,8 @@ class ProfileService
 
         $resourceList = Resources::query()->whereIn('id', $resourceId)->get()->toArray();
         $resourceListMap = $resourceList ? array_column($resourceList, null, 'id') : [];
-        $userList = User::query()->whereIn('id', $userId)->get()->toArray();
+        $userList = User::query()->whereIn('id', $userId)->where('source',
+            Resources::SOURCE_PROFILE_IMG)->get()->toArray();
         $userListMap = $userList ? array_column($userList, null, 'id') : [];
 
 
@@ -73,7 +74,8 @@ class ProfileService
         }
         $resources = [];
         //获取个人信息资源
-        $resourcesObj = Resources::query()->where('id', $data['resource_id'])->first();
+        $resourcesObj = Resources::query()->where('id', $data['resource_id'])->where('source',
+            Resources::SOURCE_PROFILE_IMG)->first();
         if ($resourcesObj) {
             $resources = $resourcesObj->toArray();
         }

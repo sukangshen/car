@@ -71,3 +71,8 @@ Route::get('getTicket', 'WechatController@getTicket');
 
 //微信推送
 Route::any('serve','WechatController@serve');
+
+//实名认证
+Route::post('identityAuth', 'MeController@identityAuth');
+Route::post('workAuth', 'MeController@workAuth');
+Route::get('myAuthInfo', 'MeController@myAuthInfo');
