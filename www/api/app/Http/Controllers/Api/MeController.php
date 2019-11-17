@@ -12,6 +12,7 @@ use App\Models\Resources;
 use App\Models\UserCheck;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\Controller as Controller;
+use Illuminate\Support\Facades\Log;
 
 class MeController extends Controller
 {
@@ -61,6 +62,7 @@ class MeController extends Controller
         try {
             $params = $request->all();
             $params = array_filter($params);
+            Log::info('身份认证'.print_r($params,true));
             $user = auth('api')->user();
             $userId = $user['id'] ?: 1;
             if (empty($params['user_name'])) {
