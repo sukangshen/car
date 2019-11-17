@@ -62,7 +62,7 @@ class MeController extends Controller
         try {
             $params = $request->all();
             $params = array_filter($params);
-            Log::info('身份认证'.print_r($params,true));
+            Log::info('身份认证' . print_r($params, true));
             $user = auth('api')->user();
             $userId = $user['id'] ?: 1;
             if (empty($params['user_name'])) {
@@ -71,12 +71,18 @@ class MeController extends Controller
             if (empty($params['id_number'])) {
                 throw new \Exception('身份证号不能为空');
             }
-            if (empty($params['image']) || count($params['image']) != 2) {
-                throw new \Exception('身份证正反面不能为空');
+            if (empty($params['image_front'])) {
+                throw new \Exception('身份证正面不能为空');
             }
+            if (empty($params['image_back'])) {
+                throw new \Exception('身份证反面不能为空');
+            }
+
             $resourceParams['user_id'] = $userId;
             $resourceParams['source'] = Resources::SOURCE_IDENTITY_IMG;
-
+            $params['image'] = [];
+            $params['image'][] = $params['image_front'];
+            $params['image'][] = $params['image_back'];
             $resourceParams['resource'] = json_encode($params['image']);
             $resourceCreate = Resources::query()->create($resourceParams);
             if (!$resourceCreate) {
@@ -170,7 +176,7 @@ class MeController extends Controller
             ];
             $userCheck = UserCheck::query()->where('user_id', $userId)->get()->toArray();
 
-            $userCheckSourceMap = $userCheck ? array_column($userCheck, 'status','source') : [];
+            $userCheckSourceMap = $userCheck ? array_column($userCheck, 'status', 'source') : [];
 
 
             if (array_key_exists(UserCheck::SOURCE_IDENTITY_IMG, $userCheckSourceMap)) {
