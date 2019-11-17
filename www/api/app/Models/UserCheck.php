@@ -8,9 +8,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SoftDeletesEx as SoftDeletes;
 
 class UserCheck extends Model
 {
+    use SoftDeletes;
     const STATUS_TO_AUDIT       = 1;    //待审核
     const STATUS_AUDIT_PASS     = 2;    //审核通过
     const STATUS_AUDIT_UN_PASS  = 2;    //审核未通过
