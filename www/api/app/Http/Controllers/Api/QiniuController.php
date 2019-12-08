@@ -17,12 +17,10 @@ class QiniuController extends Controller
     public function getQiniuToken(Request $request)
     {
         try {
-
             // 需要填写你的 Access Key 和 Secret Key
             $accessKey = env('QINIU_ACCESS_KEY');
             $secretKey = env('QINIU_SECRET_KEY');
             $bucket = env('QINIU_BUCKET');
-
             // 构建鉴权对象
             $auth = new Auth($accessKey, $secretKey);
 

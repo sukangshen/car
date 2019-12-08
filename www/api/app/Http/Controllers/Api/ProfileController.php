@@ -96,7 +96,6 @@ class ProfileController extends Controller
     public function profileSearch(Request $request)
     {
         $query = Profile::query();
-//        $query->leftJoin('resources', 'profile.resource_id', '=', 'resources.id');
         $query->select([
             'profile.id as profile_id',
             'profile.gender',
@@ -115,7 +114,6 @@ class ProfileController extends Controller
             'profile.job',
 
         ]);
-//        $query->addSelect(['resources.resource', 'resources.id as resource_id']);
         $query->orderBy('profile.created_at', 'desc');
         $profiles = $query->paginate($request->input('limit'))->toarray();
         $profiles['data'] = ProfileService::profileSearch($profiles['data']);
