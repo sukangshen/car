@@ -158,14 +158,13 @@ class ProfileController extends Controller
         $query->addSelect([
             'profile.id as profile_id',
             'profile.gender',
-            'profile.address',
             'profile.age',
             'profile.height',
             'profile.weight',
             'profile.self_intro',
             'profile.friend_condition',
             'profile.nickname',
-            'profile.address_name',
+            'profile.address_birth_name',
             'profile.end_time',
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);

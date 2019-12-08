@@ -26,13 +26,18 @@ Route::group(['middleware' => 'api.jwt.auth'], function () {
     //获取我发布的帖子
     Route::get('myProfile', 'MeController@myProfile');
 
-    //获取我发布的帖子列表
-    Route::get('myProfileList', 'ProfileController@myProfileList');
+//    //获取我发布的帖子列表
+//    Route::get('myProfileList', 'ProfileController@myProfileList');
 
 });
 
 //发表帖子
 Route::post('profileCreate', 'ProfileController@profileCreate');
+
+//获取我发布的帖子列表
+    Route::get('myProfileList', 'ProfileController@myProfileList');
+
+
 
 //微信授权入口
 Route::any('auth', 'UserController@auth');
@@ -52,6 +57,9 @@ Route::any('img', 'UploadController@img');
 
 //获取轮播图推荐
 Route::get('getSlides', 'SlidesController@getSlides');
+
+//获取首页标签
+Route::get('getHomePageLabel', 'HomePageLabelController@getHomePageLabel');
 
 //获取轮播图推荐
 Route::get('profileDetail', 'ProfileController@profileDetail');
@@ -76,3 +84,6 @@ Route::any('serve','WechatController@serve');
 Route::post('identityAuth', 'MeController@identityAuth');
 Route::post('workAuth', 'MeController@workAuth');
 Route::get('myAuthInfo', 'MeController@myAuthInfo');
+
+
+Route::get('getQiniuToken', 'QiniuController@getQiniuToken');
