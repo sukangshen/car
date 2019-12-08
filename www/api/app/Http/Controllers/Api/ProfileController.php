@@ -56,6 +56,7 @@ class ProfileController extends Controller
             //创建帖子
             $params['user_id'] = $user['id'];
             $params['nickname'] = trim($user['nickname']);
+            $params['job'] = trim($params['job']);
             $params['address_live'] = trim($params['address_live']);
             $params['address_live_name'] = trim($params['address_live_name']);
             $params['address_birth'] = trim($params['address_birth']);
@@ -111,6 +112,7 @@ class ProfileController extends Controller
             'profile.address_live_name',
             'profile.resource_id',
             'profile.user_id',
+            'profile.job',
 
         ]);
 //        $query->addSelect(['resources.resource', 'resources.id as resource_id']);
@@ -167,6 +169,7 @@ class ProfileController extends Controller
             'profile.nickname',
             'profile.address_birth_name',
             'profile.end_time',
+            'profile.job',
         ]);
         $query->addSelect(['resources.resource', 'resources.id as resource_id']);
         $profiles = $query->orderBy('profile.created_at', 'desc')->get()->toarray();
