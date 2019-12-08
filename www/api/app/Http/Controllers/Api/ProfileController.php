@@ -151,7 +151,8 @@ class ProfileController extends Controller
      */
     public function myProfileList(Request $request)
     {
-        $user = auth('api')->user();
+//        $user = auth('api')->user();
+        $user['id'] = 1;
         $query = Profile::query();
         $query->where('profile.user_id', $user['id']);
         $query->leftJoin('resources', 'profile.resource_id', '=', 'resources.id');
