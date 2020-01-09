@@ -79,6 +79,18 @@ class AdminUserController extends Controller
     }
 
     /**
+     * Desc:退出登录
+     * User: kangshensu@gmail.com
+     * Date: 2020-01-09
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        return $this->success(auth('admin')->logout());
+    }
+
+
+    /**
      * Get the token array structure.
      *
      * @param  string $token

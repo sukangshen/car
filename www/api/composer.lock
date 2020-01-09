@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64647dde3ff795fed640edc778c2a1ba",
+    "content-hash": "08ef750045b87dd64502847e4cc4aea8",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -69,12 +69,12 @@
             "version": "v0.11.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/barryvdh/laravel-cors.git",
+                "url": "https://github.com/fruitcake/laravel-cors.git",
                 "reference": "03492f1a3bc74a05de23f93b94ac7cc5c173eec9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/03492f1a3bc74a05de23f93b94ac7cc5c173eec9",
+                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/03492f1a3bc74a05de23f93b94ac7cc5c173eec9",
                 "reference": "03492f1a3bc74a05de23f93b94ac7cc5c173eec9",
                 "shasum": "",
                 "mirrors": [
@@ -843,6 +843,52 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "jxlwqq/id-validator",
+            "version": "1.4.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jxlwqq/id-validator.git",
+                "reference": "32a473ba582aad42bb34eccc2e11cb05ee6e30a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jxlwqq/id-validator/zipball/32a473ba582aad42bb34eccc2e11cb05ee6e30a5",
+                "reference": "32a473ba582aad42bb34eccc2e11cb05ee6e30a5",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jxlwqq\\IdValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jxlwqq",
+                    "email": "jxlwqq@gmail.com",
+                    "homepage": "https://jxlwqq.github.io"
+                }
+            ],
+            "description": "Chinese Mainland Personal ID Card Validation",
+            "time": "2019-11-06T06:13:28+00:00"
         },
         {
             "name": "kylekatarnls/update-helper",

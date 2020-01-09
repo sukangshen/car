@@ -13,6 +13,7 @@ use App\Models\UserCheck;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\Controller as Controller;
 use Illuminate\Support\Facades\Log;
+use Jxlwqq\IdValidator\IdValidator;
 
 class MeController extends Controller
 {
@@ -76,6 +77,14 @@ class MeController extends Controller
             }
             if (empty($params['image_back'])) {
                 throw new \Exception('身份证反面不能为空');
+            }
+
+            $idValidator = new IdValidator();
+
+            //验证身份证号码是否合法 港澳台18位 || 大陆15位
+            $validatorState = $idValidator->isValid($params['id_number']);
+            if(!$validatorState) {
+                throw new \Exception('身份证号码不合法');
             }
 
             $resourceParams['user_id'] = $userId;

@@ -8,9 +8,13 @@
  * 引入Auth中间件 验证是否授权
  */
 Route::group(['middleware' => 'admin.jwt.auth'], function () {
+    /**
+     * 登录
+     */
     //获取我的信息
     Route::get('userInfo', 'AdminUserController@userInfo');
-
+    //退出
+    Route::any('logout', 'AdminUserController@logout');
 
 });
 
