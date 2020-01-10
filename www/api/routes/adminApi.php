@@ -16,11 +16,15 @@ Route::group(['middleware' => 'admin.jwt.auth'], function () {
     //退出
     Route::any('logout', 'AdminUserController@logout');
 
+    /**
+     * 用户相关
+     */
+    Route::get('userList', 'UserController@userList');
+
 });
 
 
 
-//微信授权回调
 Route::any('register', 'AdminUserController@register');
 Route::any('login', 'AdminUserController@login');
 
