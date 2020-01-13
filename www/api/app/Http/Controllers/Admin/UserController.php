@@ -25,6 +25,13 @@ class UserController extends Controller
     {
         $query = User::query();
         $query->select();
+        if(request('nickname')) {
+            $query->where('nickname','like','%' . trim(request('nickname')) . '%');
+        }
+
+        if(request('user_name')) {
+            $query->where('user_name','like','%' . trim(request('user_name')) . '%');
+        }
         $query->orderBy('created_at', 'desc');
         $userList = $query->paginate($request->input('limit'))->toarray();
         return $this->success($userList);
