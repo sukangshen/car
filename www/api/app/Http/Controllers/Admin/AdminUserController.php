@@ -65,10 +65,6 @@ class AdminUserController extends Controller
     public function login(Request $request)
     {
 
-        $a = '<p><img src="https://videos.mofaxiao.com/img/commodity/156076247569116432.png"></p>';
-        $b =  base64_encode($a);
-echo $b;
-        echo base64_decode($b);die;
         $request->validate([
             'phone' => 'required|min:1|max:255',
             'password' => 'required|min:6|max:255'

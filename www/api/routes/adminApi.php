@@ -7,7 +7,7 @@
 /**
  * 引入Auth中间件 验证是否授权
  */
-Route::group(['middleware' => 'admin.jwt.auth'], function () {
+Route::group(['middleware' => 'guard:admin'], function () {
     /**
      * 登录
      */
@@ -20,6 +20,9 @@ Route::group(['middleware' => 'admin.jwt.auth'], function () {
      * 用户相关
      */
     Route::get('userList', 'UserController@userList');
+
+
+    Route::get('card_subject/query', 'CardSubjectController@query');
 
 });
 

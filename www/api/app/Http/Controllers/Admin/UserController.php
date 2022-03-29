@@ -14,13 +14,7 @@ use App\Http\Controllers\Admin\Controller as Controller;
 class UserController extends Controller
 {
 
-    /**
-     * Desc:获取用户列表
-     * User: kangshensu@gmail.com
-     * Date: 2020-01-10
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function userList(Request $request)
     {
         $query = User::query();

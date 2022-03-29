@@ -20,14 +20,7 @@ class UserService
      */
     public function getUserInfoByOpenId($openid)
     {
-        if (empty($openid)) {
-            return [];
-        }
 
-        $userInfo = User::query()->where('openid', $openid)->first();
-        if ($userInfo) {
-            return $userInfo->toArray();
-        }
-        return [];
+
     }
 }
