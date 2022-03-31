@@ -5,9 +5,9 @@
  * Date: 2019-09-12
  */
 /**
- * 引入Auth中间件 验证是否授权
+ * 引入Auth中间件 验证是否授权'admin.jwt.auth'
  */
-Route::group(['middleware' => 'guard:admin'], function () {
+Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function () {
     /**
      * 登录
      */
