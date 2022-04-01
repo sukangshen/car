@@ -7,25 +7,34 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\Controller as Controller;
 
 class UserController extends Controller
 {
+    protected $userService;
 
+    public function __construct(UserService $userService)
+    {
+
+        $this->userService = $userService;
+    }
 
     public function query(Request $request)
     {
+        return $this->success($this->userService->query($request->all()));
 
     }
 
     public function create(Request $request)
     {
 
+        return $this->success($this->userService->create($request->all()));
     }
 
     public function detail(Request $request)
     {
-
+        return $this->success($this->userService->detail($request->all()));
     }
 }
