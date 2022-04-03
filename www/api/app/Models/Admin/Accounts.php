@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 class Accounts extends Model
 {
 
+    protected $fillable = ['user_id', 'amount', 'cumulative_amount', 'remark'];//开启白名单字段
+
     protected $table = 'accounts';
 
     public static function getAccountInfoByUserId($userId)
@@ -21,4 +23,9 @@ class Accounts extends Model
 
     }
 
+    public function updateByConsumeAmount($consumeAmount)
+    {
+        $this->amount -= $consumeAmount;
+        $this->save();
+    }
 }

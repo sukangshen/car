@@ -26,15 +26,22 @@ class AccountController extends Controller
 
     public function recharge(Request $request)
     {
-        return $this->accountService->recharge($request->all());
+        try {
+            return $this->success($this->accountService->recharge($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
 
     }
 
 
     public function consume(Request $request)
     {
-        return $this->accountService->consume($request->all());
-
+        try {
+            return $this->success($this->accountService->consume($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
     }
 
 }
