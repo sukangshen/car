@@ -33,6 +33,10 @@ Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function
     Route::post('account/recharge', 'AccountController@recharge');
     Route::post('account/consume', 'AccountController@consume');
 
+    Route::post('user_card/recharge', 'UserCardController@recharge');
+    Route::post('user_card/consume', 'UserCardController@consume');
+
+
 });
 
 

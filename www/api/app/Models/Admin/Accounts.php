@@ -9,9 +9,12 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Accounts extends Model
 {
+
+    use SoftDeletes;
 
     protected $fillable = ['user_id', 'amount', 'cumulative_amount', 'remark'];//开启白名单字段
 

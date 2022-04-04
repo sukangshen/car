@@ -88,8 +88,8 @@ class AccountService
         //查询金额是否充足
         $userAccount = Accounts::getAccountInfoByUserId($userId);
 
-        if ($consumeAmount > $userAccount->amount) {
-            throw new \Exception('金额不足', 400);
+        if (!$userAccount || $consumeAmount > $userAccount->amount) {
+            throw new \Exception('金额不足，请充值', 400);
         }
 
         $ignoreIds = [];  //需要忽略的请求消耗的充值ID

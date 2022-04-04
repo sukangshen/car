@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: tal
- * Date: 2022-04-01
- * Time: 23:08
+ * Desc:
+ * User: sukangshen@tal.com
+ * Date: 2022/4/4
  */
 
 namespace App\Models\Admin;
@@ -11,25 +10,26 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AccountConsumeRecharge extends Model
+class UserCardConsumeRecharge extends Model
 {
     use SoftDeletes;
 
+
+    protected $table = 'user_card_consume_recharge';
+
     protected $fillable = [
         'user_id',
-        'consume_amount',
+        'card_subject_id',
         'consume_recharge_id',
-        'remain_recharge_amount',
+        'remain_recharge_times',
+        'consume_times',
         'uuid',
         'remark'
     ];//开启白名单字段
-
-    protected $table = 'account_consume_recharge';
 
 
     public static function saveData($params)
     {
         return self::query()->create($params);
     }
-
 }
