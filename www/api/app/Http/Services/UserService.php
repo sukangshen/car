@@ -7,6 +7,7 @@
 
 namespace App\Http\Services;
 
+use App\Models\Admin\Accounts;
 use App\Models\Admin\Users;
 
 class UserService
@@ -55,7 +56,19 @@ class UserService
         if (!$id) {
             throw new \Exception('客户ID不能为空');
         }
-        return Users::query()->where('id', $id)->first();
+        //用户信息
+        $userInfo =  Users::query()->where('id', $id)->first();
+
+        //卡信息
+        $userInfo['user_card_list'] = UserCardService::getCardListByUserId($id);
+
+        //充值信息
+        $accountInfo = Accounts::getAccountInfoByUserId($id);
+        $userInfo['account_amount'] = $accountInfo ?$accountInfo->amount : 0;
+        $userInfo['cumulative_amount'] = $accountInfo ?$accountInfo->cumulative_amount : 0;
+
+
+        return $userInfo;
     }
 
 }

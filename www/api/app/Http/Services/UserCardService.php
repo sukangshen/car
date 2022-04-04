@@ -147,4 +147,15 @@ class UserCardService
         }
 
     }
+
+
+    public static function getCardListByUserId($userId)
+    {
+        $cardList = UserCard::query()
+            ->select(['user_id','card_subject_id','card_subject.name as card_subject_name','times','cumulative_times'])
+            ->join('card_subject','card_subject.id','=','user_card.card_subject_id')
+            ->where('user_id',$userId)
+            ->get()->toArray();
+        return $cardList ?? [];
+    }
 }
