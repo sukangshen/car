@@ -45,7 +45,7 @@ class UserService
             throw new \Exception('手机号已经存在');
         }
 
-        return Users::query()->insert($params);
+        return Users::query()->create($params);
 
     }
 
