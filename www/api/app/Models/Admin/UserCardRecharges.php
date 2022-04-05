@@ -54,7 +54,7 @@ class UserCardRecharges extends Model
             'uuid' => $uuId,
             'consume_times' => $step,
             'consume_recharge_id' => $this->id,
-            'remain_recharge_amount' => $remainRechargeTimes,
+            'remain_recharge_times' => $remainRechargeTimes,
             'card_subject_id' => $this->card_subject_id
         ];
 

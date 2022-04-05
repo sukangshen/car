@@ -62,5 +62,13 @@ class UserCardController extends Controller
         }
     }
 
+    public function cardSubjectQuery(Request $request)
+    {
+        try {
+            return $this->success($this->userCardService->cardSubjectQuery($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
+    }
 
 }

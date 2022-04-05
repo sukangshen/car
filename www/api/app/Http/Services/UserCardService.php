@@ -179,7 +179,7 @@ class UserCardService
             ->select(['user_card_recharges.*', 'card_subject.name as card_subject_name'])
             ->join('card_subject', 'card_subject.id', '=', 'user_card_recharges.card_subject_id')
             ->where('user_id', $userId)
-            ->orderBy('user_card_recharges.id','desc')
+            ->orderBy('user_card_recharges.id', 'desc')
             ->paginate($perPage);
     }
 
@@ -200,9 +200,30 @@ class UserCardService
             ->select(['user_card_consume_recharge.*', 'card_subject.name as card_subject_name'])
             ->join('card_subject', 'card_subject.id', '=', 'user_card_consume_recharge.card_subject_id')
             ->where('user_id', $userId)
-            ->orderBy('user_card_consume_recharge.id','desc')
+            ->orderBy('user_card_consume_recharge.id', 'desc')
             ->paginate($perPage);
     }
 
+
+    public function cardSubjectQuery($params)
+    {
+        $userId = array_get($params, 'user_id', 0);
+        if (!$userId) {
+            throw new \Exception('用户ID不能为空', 400);
+        }
+
+        $cardList = CardSubject::query()
+            ->select([
+                'user_id',
+                'card_subject_id',
+                'card_subject.name as card_subject_name',
+                'times',
+                'cumulative_times'
+            ])
+            ->leftJoin('user_card', 'card_subject.id', '=', 'user_card.card_subject_id')
+            ->where('user_id', $userId)
+            ->get()->toArray();
+        return $cardList ?? [];
+    }
 
 }

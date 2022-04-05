@@ -44,6 +44,7 @@ Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function
     //列表
     Route::get('user_card/recharge/query', 'UserCardController@rechargeQuery');
     Route::get('user_card/consume/query', 'UserCardController@consumeQuery');
+    Route::get('user_card/card_subject/query', 'UserCardController@cardSubjectQuery');
 
 
 });
