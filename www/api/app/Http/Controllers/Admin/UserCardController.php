@@ -42,4 +42,25 @@ class UserCardController extends Controller
         }
     }
 
+    public function rechargeQuery(Request $request)
+    {
+        try {
+            return $this->success($this->userCardService->rechargeQuery($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
+
+    }
+
+
+    public function consumeQuery(Request $request)
+    {
+        try {
+            return $this->success($this->userCardService->consumeQuery($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+
 }

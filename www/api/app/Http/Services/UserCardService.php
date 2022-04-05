@@ -10,6 +10,7 @@ namespace App\Http\Services;
 
 use App\Models\Admin\CardSubject;
 use App\Models\Admin\UserCard;
+use App\Models\Admin\UserCardConsumeRecharge;
 use App\Models\Admin\UserCardRecharges;
 use Illuminate\Support\Facades\DB;
 
@@ -152,10 +153,56 @@ class UserCardService
     public static function getCardListByUserId($userId)
     {
         $cardList = UserCard::query()
-            ->select(['user_id','card_subject_id','card_subject.name as card_subject_name','times','cumulative_times'])
-            ->join('card_subject','card_subject.id','=','user_card.card_subject_id')
-            ->where('user_id',$userId)
+            ->select([
+                'user_id',
+                'card_subject_id',
+                'card_subject.name as card_subject_name',
+                'times',
+                'cumulative_times'
+            ])
+            ->join('card_subject', 'card_subject.id', '=', 'user_card.card_subject_id')
+            ->where('user_id', $userId)
             ->get()->toArray();
         return $cardList ?? [];
     }
+
+
+    public function rechargeQuery($params)
+    {
+        $perPage = array_get($params, 'per_page', 10);
+        $userId = array_get($params, 'user_id', 0);
+        if (!$userId) {
+            throw new \Exception('用户ID不能为空', 400);
+        }
+
+        return UserCardRecharges::query()
+            ->select(['user_card_recharges.*', 'card_subject.name as card_subject_name'])
+            ->join('card_subject', 'card_subject.id', '=', 'user_card_recharges.card_subject_id')
+            ->where('user_id', $userId)
+            ->orderBy('user_card_recharges.id','desc')
+            ->paginate($perPage);
+    }
+
+    public function consumeQuery($params)
+    {
+        $userId = array_get($params, 'user_id', 0);
+        if (!$userId) {
+            throw new \Exception('用户ID不能为空', 400);
+        }
+
+        $perPage = array_get($params, 'per_page', 10);
+        $userId = array_get($params, 'user_id', 0);
+        if (!$userId) {
+            throw new \Exception('用户ID不能为空', 400);
+        }
+
+        return UserCardConsumeRecharge::query()
+            ->select(['user_card_consume_recharge.*', 'card_subject.name as card_subject_name'])
+            ->join('card_subject', 'card_subject.id', '=', 'user_card_consume_recharge.card_subject_id')
+            ->where('user_id', $userId)
+            ->orderBy('user_card_consume_recharge.id','desc')
+            ->paginate($perPage);
+    }
+
+
 }

@@ -9,6 +9,7 @@
 namespace App\Http\Services;
 
 
+use App\Models\Admin\AccountConsumeRecharge;
 use App\Models\Admin\AccountRecharges;
 use App\Models\Admin\Accounts;
 use Illuminate\Support\Facades\DB;
@@ -132,5 +133,32 @@ class AccountService
         }
 
     }
+
+
+    public function rechargeQuery($params)
+    {
+        $userId = array_get($params, 'user_id', 0);
+        $perPage = array_get($params, 'per_page', 10);
+
+        $query = AccountRecharges::query();
+        $query->where('user_id', $userId);
+        $query->orderBy('id', 'desc');
+        $res = $query->paginate($perPage);
+        return $res;
+    }
+
+    public function consumeQuery($params)
+    {
+        $userId = array_get($params, 'user_id', 0);
+        $perPage = array_get($params, 'per_page', 10);
+
+        $query = AccountConsumeRecharge::query();
+        $query->where('user_id', $userId);
+        $query->orderBy('id', 'desc');
+        $res = $query->paginate($perPage);
+        return $res;
+    }
+
+
 
 }

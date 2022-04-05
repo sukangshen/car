@@ -44,4 +44,28 @@ class AccountController extends Controller
         }
     }
 
+
+    public function rechargeQuery(Request $request)
+    {
+        try {
+            return $this->success($this->accountService->rechargeQuery($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
+
+    }
+
+
+    public function consumeQuery(Request $request)
+    {
+        try {
+            return $this->success($this->accountService->consumeQuery($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+
+
+
 }

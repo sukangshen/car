@@ -30,12 +30,20 @@ Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function
     Route::get('user/query', 'UserController@query');
     Route::get('user/detail', 'UserController@detail');
 
-
+    //充值消费
     Route::post('account/recharge', 'AccountController@recharge');
     Route::post('account/consume', 'AccountController@consume');
+    //列表
+    Route::get('account/recharge/query', 'AccountController@rechargeQuery');
+    Route::get('account/consume/query', 'AccountController@consumeQuery');
 
+    //充值消费
     Route::post('user_card/recharge', 'UserCardController@recharge');
     Route::post('user_card/consume', 'UserCardController@consume');
+
+    //列表
+    Route::get('user_card/recharge/query', 'UserCardController@rechargeQuery');
+    Route::get('user_card/consume/query', 'UserCardController@consumeQuery');
 
 
 });
