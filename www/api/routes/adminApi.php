@@ -26,6 +26,7 @@ Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function
 
 
     Route::post('user/create', 'UserController@create');
+    Route::post('user/modify', 'UserController@modify');
     Route::get('user/query', 'UserController@query');
     Route::get('user/detail', 'UserController@detail');
 

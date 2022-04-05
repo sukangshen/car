@@ -35,8 +35,12 @@ class UserController extends Controller
 
     public function detail(Request $request)
     {
-
-
         return $this->success($this->userService->detail($request->all()));
+    }
+
+    public function modify(Request $request)
+    {
+        return $this->success($this->userService->modify($request->all()));
+
     }
 }
