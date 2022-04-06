@@ -16,16 +16,21 @@ class UserService
 
     public function query($params)
     {
-
-        $columnName = array_get($params, 'column_name', '');
-        $columnValue = array_get($params, 'column_value', '');
+        $userName = trim(array_get($params, 'user_name', ''));
+        $userMobile = trim(array_get($params, 'user_mobile', ''));
+        $plateNumber = trim(array_get($params, 'plate_number', ''));
         $perPage = array_get($params, 'per_page', 10);
 
 
         $query = Users::query();
-        if ($columnName && $columnValue) {
-            $query->where($columnName, 'like', "%{$columnValue}%");
-
+        if ($userName) {
+            $query->where('user_name', 'like', "%{$userName}%");
+        }
+        if ($userMobile) {
+            $query->where('user_mobile', 'like', "%{$userMobile}%");
+        }
+        if ($plateNumber) {
+            $query->where('plate_number', 'like', "%{$plateNumber}%");
         }
         $query->orderBy('id', 'desc');
         $res = $query->paginate($perPage);

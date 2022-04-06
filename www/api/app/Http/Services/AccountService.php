@@ -43,7 +43,7 @@ class AccountService
                 'raw_amount' => $rawAmount,
                 'amount' => $rawAmount,
             ];
-            $accountRechargesRes = AccountRecharges::query()->create($accountRechargesParams);
+            AccountRecharges::query()->create($accountRechargesParams);
 
             //更新总金额
             $userAccount = Accounts::getAccountInfoByUserId($userId);
@@ -61,7 +61,7 @@ class AccountService
             }
             DB::commit();
 
-            return $accountRechargesRes->insertGetId($accountRechargesParams);
+            return true;
         } catch (\Exception $exception) {
             DB::rollBack();
             throw new \Exception($exception->getFile() . '-' . $exception->getLine() . '-' . $exception->getMessage());
