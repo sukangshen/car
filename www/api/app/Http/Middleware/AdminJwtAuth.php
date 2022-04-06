@@ -31,17 +31,17 @@ class AdminJwtAuth
      */
     public function handle($request, Closure $next)
     {
-        if (! $this->auth->parser()->setRequest($request)->hasToken()) {
-            return $this->respond('token_not_provided', 422); //缺少令牌
+        if (!$this->auth->parser()->setRequest($request)->hasToken()) {
+            return $this->fail(401, 'token_not_provided'); //缺少令牌
         }
         try {
             if (!$user = $this->auth->parseToken()->authenticate()) {
-                return $this->respond('user_not_found', 404);
+                return $this->fail(404, 'user_not_found');
             }
         } catch (TokenExpiredException $e) {
-            return $this->respond('token_expired', 401); //令牌过期
+            return $this->fail(401, 'token_expired'); //令牌过期
         } catch (JWTException $e) {
-            return $this->respond('token_invalid', 400); //令牌无效
+            return $this->fail(401, 'token_invalid'); //令牌无效
         }
 
         return $next($request);
@@ -57,4 +57,27 @@ class AdminJwtAuth
     {
         return response()->json(['error' => $error], $status);
     }
+
+    public function success($data = [])
+    {
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => config('errorcode.code')[200],
+            'data' => $data,
+        ]);
+    }
+
+    public function fail($code, $msg = '', $data = [])
+    {
+        return response()->json([
+            'status' => false,
+            'code' => $code,
+            'message' => !empty($msg) ? $msg : config('errorcode.code')[(int)$code],
+            'data' => $data,
+        ]);
+    }
+
+
+
 }
