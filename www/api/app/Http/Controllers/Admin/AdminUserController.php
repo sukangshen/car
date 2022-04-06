@@ -71,10 +71,13 @@ class AdminUserController extends Controller
         ]);
         $token = auth('admin')->attempt($request->all());
 
+        if (!$token) {
+            return $this->fail(401, '用户名密码错误');
+        }
         return $this->success([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => auth('admin')->factory()->getTTL() * 60
         ]);
     }
 

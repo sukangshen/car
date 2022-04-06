@@ -47,6 +47,9 @@ Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function
     Route::get('user_card/card_subject/query', 'UserCardController@cardSubjectQuery');
 
 
+    Route::get('statistics/info', 'StatisticsController@info');
+
+
 });
 
 
