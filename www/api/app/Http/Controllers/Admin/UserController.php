@@ -29,8 +29,12 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
+        try {
+            return $this->success($this->userService->create($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
 
-        return $this->success($this->userService->create($request->all()));
     }
 
     public function detail(Request $request)
@@ -40,7 +44,11 @@ class UserController extends Controller
 
     public function modify(Request $request)
     {
-        return $this->success($this->userService->modify($request->all()));
+        try {
+            return $this->success($this->userService->modify($request->all()));
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getCode(), $exception->getMessage());
+        }
 
     }
 }

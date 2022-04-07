@@ -16,6 +16,6 @@ class CardSubjectController extends Controller
 {
     public function query(Request $request)
     {
-        return $this->success(CardSubject::query()->get());
+        return $this->success(CardSubject::query()->select(['id','id as card_subject_id','name'])->get());
     }
 }

@@ -43,12 +43,12 @@ class UserService
 
         $userMobile = array_get($params, 'user_mobile', '');
         if (!$userMobile) {
-            throw new \Exception('手机号不能为空');
+            throw new \Exception('手机号不能为空',400);
         }
 
         $userInfo = Users::query()->where('user_mobile', $userMobile)->first();
         if ($userInfo) {
-            throw new \Exception('手机号已经存在');
+            throw new \Exception('手机号已经存在',400);
         }
 
         return Users::query()->create($params);
