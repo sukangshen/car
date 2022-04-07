@@ -31,7 +31,7 @@ class StatisticsService
         switch ($dateType) {
             case self::DATE_TYPE_DAY:
                 $startTime = date('Y-m-d');
-                $endTime = date("Y-m-d 23:59:59", strtotime('tomorrow'));
+                $endTime = date("Y-m-d 23:59:59");
                 break;
             case self::DATE_TYPE_WEEK:
                 $startTime = date('Y-m-d', strtotime('-' . date('w') . ' days'));
