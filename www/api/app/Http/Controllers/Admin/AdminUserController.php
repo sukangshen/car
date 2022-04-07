@@ -72,7 +72,7 @@ class AdminUserController extends Controller
         $token = auth('admin')->attempt($request->all());
 
         if (!$token) {
-            return $this->fail(401, '用户名密码错误');
+            return $this->fail(400, '用户名密码错误');
         }
         return $this->success([
             'access_token' => $token,
