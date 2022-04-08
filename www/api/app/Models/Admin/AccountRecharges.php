@@ -36,12 +36,14 @@ class AccountRecharges extends Model
 
         // 本次实际使用的值
         $step = ($availableAmount > $moveAmount ? $moveAmount : $availableAmount);
+
         $this->amount -= $step;
 
         $moveAmount -= $step;
 
         //剩余金额
         $remainRechargeAmount = $availableAmount - $step;
+
 
         //增加 消耗的生成记录
         $consumeRechargeData = [
@@ -51,6 +53,7 @@ class AccountRecharges extends Model
             'consume_recharge_id' => $this->id,
             'remain_recharge_amount' => $remainRechargeAmount,
         ];
+
 
         //消耗充值记录
         AccountConsumeRecharge::saveData($consumeRechargeData);

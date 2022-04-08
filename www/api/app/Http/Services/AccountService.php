@@ -34,6 +34,9 @@ class AccountService
             throw new \Exception('金额必须大于0');
 
         }
+        if (floor($rawAmount) != $rawAmount) {
+            throw new \Exception('金额必须为整数');
+        }
 
         try {
             //创建recharge一条记录
@@ -82,6 +85,10 @@ class AccountService
 
         if ($consumeAmount <= 0) {
             throw new \Exception('金额必须大于0');
+        }
+
+        if (floor($consumeAmount) != $consumeAmount) {
+            throw new \Exception('金额必须为整数');
         }
 
         $uuId = md5(uniqid() . mt_rand(1, 1000000));
