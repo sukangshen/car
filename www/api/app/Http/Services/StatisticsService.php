@@ -71,11 +71,18 @@ class StatisticsService
                 ->sum('consume_times') ?? 0;
 
 
-        //充值金额
-        $data['recharge_amount'] = AccountRecharges::query()
+        //充值金额 = 储值—+卡
+        $rechargeAmount = AccountRecharges::query()
                 ->where('created_at', '>=', $startTime)
                 ->where('created_at', '<=', $endTime)
                 ->sum('raw_amount') ?? 0;
+
+        $cardRechargeAmount = UserCardRecharges::query()
+                ->where('created_at', '>=', $startTime)
+                ->where('created_at', '<=', $endTime)
+                ->sum('amount') ?? 0;
+        $data['recharge_times'] = $rechargeAmount + $cardRechargeAmount;
+
 
         //消费金额
         $data['consume_amount'] = AccountConsumeRecharge::query()

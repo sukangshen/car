@@ -22,6 +22,7 @@ class UserCardService
         $userId = array_get($params, 'user_id', 0);
         $cardSubjectId = array_get($params, 'card_subject_id', 0);
         $times = array_get($params, 'recharge_times', 0);
+        $amount = array_get($params, 'amount', 0);
         if (!$userId) {
             throw new \Exception('用户ID不能为空');
         }
@@ -48,7 +49,8 @@ class UserCardService
                 'user_id' => $userId,
                 'card_subject_id' => $cardSubjectId,
                 'times' => $times,
-                'raw_times' => $times
+                'raw_times' => $times,
+                'amount'=>$amount
             ];
             UserCardRecharges::saveData($userCardRechargesParams);
 

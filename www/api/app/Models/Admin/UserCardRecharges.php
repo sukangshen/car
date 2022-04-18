@@ -17,7 +17,7 @@ class UserCardRecharges extends Model
 
     protected $table = 'user_card_recharges';
 
-    protected $fillable = ['user_id', 'card_subject_id', 'times', 'remark', 'raw_times'];//开启白名单字段
+    protected $fillable = ['user_id', 'card_subject_id', 'times', 'remark', 'raw_times','amount'];//开启白名单字段
 
     public static function saveData($params)
     {

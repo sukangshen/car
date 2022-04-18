@@ -23,6 +23,7 @@ Route::group(['middleware' => ['assign.guard:admin','admin.jwt.auth']], function
 
 
     Route::get('card_subject/query', 'CardSubjectController@query');
+    Route::get('package_items/query', 'PackageItemsController@query');
 
 
     Route::post('user/create', 'UserController@create');
