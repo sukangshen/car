@@ -166,6 +166,20 @@ class UserCardService
             ->join('card_subject', 'card_subject.id', '=', 'user_card.card_subject_id')
             ->where('user_id', $userId)
             ->get()->toArray();
+
+        $consumeCardList = UserCardConsumeRecharge::query()
+            ->select(['id','card_subject_id',DB::raw('SUM(consume_times) as consume_times_tal'),])
+            ->where('user_id',$userId)
+            ->groupBy(['card_subject_id'])
+            ->get()->toArray();
+        $consumeMapCardList = $consumeCardList ? array_column($consumeCardList,'consume_times_tal','card_subject_id') : [];
+
+        if($cardList) {
+            foreach ($cardList as $index => &$item) {
+                $item['consume_times_tal'] = $consumeMapCardList[$item['card_subject_id']] ?? 0;
+            }
+        }
+
         return $cardList ?? [];
     }
 
