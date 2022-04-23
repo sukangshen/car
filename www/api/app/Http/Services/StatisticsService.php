@@ -81,7 +81,7 @@ class StatisticsService
                 ->where('created_at', '>=', $startTime)
                 ->where('created_at', '<=', $endTime)
                 ->sum('amount') ?? 0;
-        $data['recharge_times'] = $rechargeAmount + $cardRechargeAmount;
+        $data['recharge_amount'] = $rechargeAmount + $cardRechargeAmount;
 
 
         //消费金额

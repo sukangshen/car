@@ -16,6 +16,6 @@ class PackageItemsController extends Controller
 {
     public function query(Request $request)
     {
-        return $this->success(PackageItems::query()->select(['id','id as package_items_id','name','created_at','updated_at'])->get());
+        return $this->success(PackageItems::query()->select(['id','id as package_items_id','amount','name','created_at','updated_at'])->get());
     }
 }
